@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateEvent1600359117467 implements MigrationInterface {
+export class CreateEvent1600374423578 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // `uuid_generate_v4()` extension must be activated on db.
     // CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
     await queryRunner.createTable(
       new Table({
-        name: "events",
+        name: "users",
         columns: [
           {
             name: "id",
@@ -16,12 +16,17 @@ export class CreateEvent1600359117467 implements MigrationInterface {
             default: "uuid_generate_v4()",
           },
           {
-            name: "user",
+            name: "name",
             type: "varchar",
           },
           {
-            name: "date",
-            type: "timestamp with time zone",
+            name: "email",
+            type: "varchar",
+            isUnique: true,
+          },
+          {
+            name: "passwd",
+            type: "varchar",
           },
           {
             name: "created_at",
@@ -39,6 +44,6 @@ export class CreateEvent1600359117467 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable("events");
+    await queryRunner.dropTable("users");
   }
 }

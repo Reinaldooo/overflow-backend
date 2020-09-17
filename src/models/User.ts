@@ -4,24 +4,19 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  ManyToOne,
 } from "typeorm";
 //
-import User from "./User";
 
 // This is a decorator, it works like a function and the class is as argument
 // Something like: Entity(class)
 @Entity("events")
-class Event {
+class User {
   // Constructor is not needed since typeorm will do this behind the scenes
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
-  user_id: string;
-
-  @ManyToOne(() => User)
-  user: User;
+  user: string;
 
   @Column("timestamp with time zone")
   date: Date;
@@ -33,4 +28,4 @@ class Event {
   updated_at: Date;
 }
 
-export default Event;
+export default User;
