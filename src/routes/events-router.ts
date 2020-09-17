@@ -1,10 +1,11 @@
 import { Router } from "express";
 import { parseISO } from "date-fns";
 import { getCustomRepository } from "typeorm";
+// This function is used to load repos that i created (custom)
+// If a repository is the stantard without custom methods, i can just use "getRepository"
 //
 import EventsRepository from "../repositories/EventsRepository";
 import CreateEvent from "../services/CreateEvent";
-import { parse } from "path";
 
 const eventsRouter = Router();
 
@@ -16,7 +17,7 @@ eventsRouter.get("/", async (_, res) => {
 
 eventsRouter.post("/", async (req, res) => {
   try {
-    const { user, date } = req.body;
+    const { user_id, date } = req.body;
 
     const parsedDate = parseISO(date);
 
@@ -24,7 +25,7 @@ eventsRouter.post("/", async (req, res) => {
 
     const event = await createEvent.execute({
       date: parsedDate,
-      user,
+      user_id,
     });
 
     return res.json(event);

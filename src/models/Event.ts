@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
+  JoinColumn,
 } from "typeorm";
 //
 import User from "./User";
@@ -12,7 +13,7 @@ import User from "./User";
 // This is a decorator, it works like a function and the class is as argument
 // Something like: Entity(class)
 @Entity("events")
-class Event {
+export default class Event {
   // Constructor is not needed since typeorm will do this behind the scenes
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -20,7 +21,9 @@ class Event {
   @Column()
   user_id: string;
 
+  // user field will return User obj. Check docs for more
   @ManyToOne(() => User)
+  @JoinColumn({ name: "user_id" })
   user: User;
 
   @Column("timestamp with time zone")
@@ -32,5 +35,3 @@ class Event {
   @UpdateDateColumn()
   updated_at: Date;
 }
-
-export default Event;
