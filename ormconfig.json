@@ -1,0 +1,15 @@
+{
+  "type": "postgres",
+  "host": "localhost",
+  "port": 2341,
+  "username": "worker",
+  "password": "post0210",
+  "database": "typecal",
+  "synchronize": true,
+  "logging": false,
+  "entities": ["src/models/**/*.ts"],
+  "migrations": ["src/db/migrations/**/*.ts"],
+  "cli": {
+    "migrationsDir": "src/db/migrations"
+  }
+}
