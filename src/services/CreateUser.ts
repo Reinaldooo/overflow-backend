@@ -27,14 +27,16 @@ export default class CreateUser {
 
     const hashedPasswd = await hash(passwd, 8);
 
-    const event = userRepository.create({
+    const user = userRepository.create({
       name,
       email,
       passwd: hashedPasswd,
     });
 
-    await userRepository.save(event);
+    await userRepository.save(user);
 
-    return event;
+    delete user.passwd;
+
+    return user;
   }
 }
