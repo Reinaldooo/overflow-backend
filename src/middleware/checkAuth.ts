@@ -22,9 +22,7 @@ export default function checkAuth(
   try {
     const decoded = verify(token, authConfig.jwt.phrase);
     const { id } = decoded as DecodedToken;
-    req.user = {
-      id,
-    };
+    req.userId = id;
   } catch (error) {
     throw new Error("Invalid token");
   }

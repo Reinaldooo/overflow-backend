@@ -24,6 +24,9 @@ export default class User {
   @Column()
   passwd: string;
 
+  @Column()
+  avatar: string;
+
   @CreateDateColumn()
   createdAt: Date;
 
