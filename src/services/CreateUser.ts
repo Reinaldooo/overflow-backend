@@ -2,10 +2,10 @@ import { getRepository } from "typeorm";
 // This function is used to load a default repo containing typeorm methods
 import { hash } from "bcryptjs";
 //
-import User from "../models/User";
+import User from "@models/User";
 // A custom User Repo wasn't needed
 
-interface Request {
+interface RequestModel {
   name: string;
   email: string;
   passwd: string;
@@ -13,7 +13,7 @@ interface Request {
 
 export default class CreateUser {
   // Each service consists of a simple execute method that handle all business rules
-  public async execute({ name, email, passwd }: Request): Promise<User> {
+  public async execute({ name, email, passwd }: RequestModel): Promise<User> {
     const userRepository = getRepository(User);
 
     const userExists = await userRepository.findOne({

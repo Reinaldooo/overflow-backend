@@ -1,6 +1,6 @@
 import { EntityRepository, Repository } from "typeorm";
 //
-import Event from "../models/Event";
+import Event from "@models/Event";
 
 @EntityRepository(Event)
 // This decorator creates a new repo based on the old one and add the new

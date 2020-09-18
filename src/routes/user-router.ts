@@ -1,10 +1,12 @@
 import { Router } from "express";
 //
-import CreateUser from "../services/CreateUser";
+import CreateUser from "@services/CreateUser";
 
 const userRouter = Router();
 
 userRouter.post("/", async (req, res) => {
+  //> /users
+  // Body fields: name, email, passwd
   try {
     const { name, email, passwd } = req.body;
 

@@ -5,17 +5,25 @@ import { getCustomRepository } from "typeorm";
 // If a repository is the stantard without custom methods, i can just use "getRepository"
 //
 import EventsRepository from "../repositories/EventsRepository";
-import CreateEvent from "../services/CreateEvent";
+import CreateEvent from "@services/CreateEvent";
+import checkAuth from "../middleware/checkAuth";
 
 const eventsRouter = Router();
 
+eventsRouter.use(checkAuth);
+
 eventsRouter.get("/", async (_, res) => {
+  //> /events
+  // Token required
   const eventsRepository = getCustomRepository(EventsRepository);
   const events = await eventsRepository.find();
   return res.json(events);
 });
 
 eventsRouter.post("/", async (req, res) => {
+  //> /events
+  // Token required
+  // Body fields: userId, date
   try {
     const { userId, date } = req.body;
 

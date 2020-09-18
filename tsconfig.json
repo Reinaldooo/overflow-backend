@@ -20,9 +20,8 @@
     //---- paths allows imports to be made with @folder
     "baseUrl": ".",
     "paths": {
-      "@controllers/*": ["./src/controllers/*"],
+      "@services/*": ["./src/services/*"],
       "@models/*": ["./src/models/*"],
-      "@views/*": ["./src/views/*"],
       "@config/*": ["./src/config/*"]
     }
   }
