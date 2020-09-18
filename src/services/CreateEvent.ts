@@ -5,6 +5,7 @@ import { getCustomRepository } from "typeorm";
 //
 import Event from "@models/Event";
 import EventsRepository from "../repositories/EventsRepository";
+import AppError from "src/errors/AppError";
 
 interface RequestModel {
   userId: string;
@@ -16,7 +17,7 @@ export default class CreateEvent {
   public async execute({ date, userId }: RequestModel): Promise<Event> {
     if (!date || !userId) {
       // throw erros in here and send them back in the route
-      throw new Error("Missing event info");
+      throw new AppError("Missing event info");
     }
 
     const eventsRepository = getCustomRepository(EventsRepository);
@@ -27,7 +28,7 @@ export default class CreateEvent {
 
     if (eventExists) {
       // throw erros in here and send them back in the route
-      throw new Error("This hour is already booked");
+      throw new AppError("This hour is already booked");
     }
 
     const event = eventsRepository.create({

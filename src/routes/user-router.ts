@@ -10,22 +10,18 @@ const userRouter = Router();
 const upload = multer(multerConfig);
 
 userRouter.post("/", async (req, res) => {
-  //---> /users
+  //> /users
   // Body fields: name, email, passwd
-  try {
-    const { name, email, passwd } = req.body;
+  const { name, email, passwd } = req.body;
 
-    const createUser = new CreateUser();
+  const createUser = new CreateUser();
 
-    const user = await createUser.execute({
-      name,
-      email,
-      passwd,
-    });
-    return res.send(user);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
+  const user = await createUser.execute({
+    name,
+    email,
+    passwd,
+  });
+  return res.send(user);
 });
 
 userRouter.post(
@@ -36,18 +32,15 @@ userRouter.post(
     //---> /users/avatar
     if (!req.file)
       return res.status(401).json({ error: "Invalid or missing file." });
-    try {
-      const updateUserAvatar = new UpdateUserAvatar();
 
-      const { avatar, name } = await updateUserAvatar.execute({
-        userId: req.userId,
-        avatarName: req.file.filename,
-      });
+    const updateUserAvatar = new UpdateUserAvatar();
 
-      res.json({ avatar, name });
-    } catch (error) {
-      return res.status(400).json({ error: error.message });
-    }
+    const { avatar, name } = await updateUserAvatar.execute({
+      userId: req.userId,
+      avatarName: req.file.filename,
+    });
+
+    res.json({ avatar, name });
   }
 );
 

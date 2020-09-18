@@ -1,5 +1,5 @@
 import { resolve, extname } from "path";
-import crypto, { randomBytes } from "crypto";
+import { randomBytes } from "crypto";
 import multer from "multer";
 
 const destination = resolve(__dirname, "..", "..", "uploads");
@@ -12,14 +12,13 @@ export const multerConfig = {
     filename(_, file, cb) {
       // As for the file name, crypto function creates a random set of
       // chars and concat it with the original extension
-      crypto.randomBytes(16, (err, res) => {
+      randomBytes(16, (err, res) => {
         if (err) return cb(err, null);
         return cb(null, res.toString("hex") + extname(file.originalname));
       });
     },
   }),
   fileFilter: (_, file, cb) => {
-    // TODO: Insert error into req or treat error in other way
     if (
       file.mimetype === "image/png" ||
       file.mimetype === "image/jpg" ||

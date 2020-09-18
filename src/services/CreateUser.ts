@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { hash } from "bcryptjs";
 //
 import User from "@models/User";
+import AppError from "src/errors/AppError";
 // A custom User Repo wasn't needed
 
 interface RequestModel {
@@ -22,7 +23,7 @@ export default class CreateUser {
 
     if (userExists) {
       // throw erros in here and send them back in the route
-      throw new Error("Email already used.");
+      throw new AppError("Email already used.");
     }
 
     const hashedPasswd = await hash(passwd, 8);

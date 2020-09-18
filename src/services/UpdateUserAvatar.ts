@@ -4,6 +4,7 @@ import { promises } from "fs";
 //
 import User from "@models/User";
 import { uploadsDir } from "@config/upload";
+import AppError from "src/errors/AppError";
 
 interface RequestModel {
   userId: string;
@@ -16,11 +17,14 @@ export default class UpdateUserAvatar {
 
     const user = await userRepository.findOne(userId);
 
-    if (!user) throw new Error("Invalid user id.");
+    if (!user) throw new AppError("Invalid user id.");
 
     if (user.avatar) {
       const avatarPath = path.join(uploadsDir, user.avatar);
       try {
+        // This try/catch is needed to avoid exception if there isn't a file
+        // with the name specified
+
         // Check if avatar file exists, and if it does, delete it
         // stat method returns info about a file IF it exists
         // unlink method will delete the file

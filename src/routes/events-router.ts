@@ -24,22 +24,18 @@ eventsRouter.post("/", async (req, res) => {
   //---> /events
   // Token required
   // Body fields: userId, date
-  try {
-    const { userId, date } = req.body;
+  const { userId, date } = req.body;
 
-    const parsedDate = parseISO(date);
+  const parsedDate = parseISO(date);
 
-    const createEvent = new CreateEvent();
+  const createEvent = new CreateEvent();
 
-    const event = await createEvent.execute({
-      date: parsedDate,
-      userId,
-    });
+  const event = await createEvent.execute({
+    date: parsedDate,
+    userId,
+  });
 
-    return res.json(event);
-  } catch (error) {
-    return res.status(400).json({ error: error.message });
-  }
+  return res.json(event);
 });
 
 export default eventsRouter;

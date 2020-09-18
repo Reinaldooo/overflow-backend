@@ -3,6 +3,7 @@ import { compare } from "bcryptjs";
 import { sign } from "jsonwebtoken";
 //
 import User from "@models/User";
+import AppError from "../errors/AppError";
 import authConfig from "../config/auth";
 
 interface RequestModel {
@@ -23,14 +24,10 @@ export default class AuthUser {
     const usersRepository = getRepository(User);
 
     const user = await usersRepository.findOne({ where: { email } });
-    if (!user) {
-      throw new Error("Invalid mail/password.");
-    }
+    if (!user) throw new AppError("Invalid mail/password.");
 
     const passMatch = await compare(passwd, user.passwd);
-    if (!passMatch) {
-      throw new Error("Invalid mail/password.");
-    }
+    if (!passMatch) throw new AppError("Invalid mail/password.");
 
     const { jwt } = authConfig;
     const token = sign({ id: user.id }, jwt.phrase, jwt.options);
