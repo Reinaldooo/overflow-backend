@@ -24,12 +24,12 @@ export class CreateEvent1600359117467 implements MigrationInterface {
             type: "timestamp with time zone",
           },
           {
-            name: "created_at",
+            name: "createdAt",
             type: "timestamp",
             default: "now()",
           },
           {
-            name: "updated_at",
+            name: "updatedAt",
             type: "timestamp",
             default: "now()",
           },

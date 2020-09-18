@@ -7,13 +7,17 @@ import Event from "../models/Event";
 import EventsRepository from "../repositories/EventsRepository";
 
 interface Request {
-  user_id: string;
+  userId: string;
   date: Date;
 }
 
 export default class CreateEvent {
   // Each service consists of a simple execute method that handle all business rules
-  public async execute({ date, user_id }: Request): Promise<Event> {
+  public async execute({ date, userId }: Request): Promise<Event> {
+    if (!date || !userId) {
+      // throw erros in here and send them back in the route
+      throw new Error("Missing event info");
+    }
     const eventsRepository = getCustomRepository(EventsRepository);
 
     const eventHour = startOfHour(date);
@@ -26,7 +30,7 @@ export default class CreateEvent {
     }
 
     const event = eventsRepository.create({
-      user_id,
+      userId,
       date: eventHour,
     });
 

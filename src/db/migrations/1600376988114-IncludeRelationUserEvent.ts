@@ -13,7 +13,7 @@ export class IncludeRelationUserEvent1600376988114
     await queryRunner.addColumn(
       "events",
       new TableColumn({
-        name: "user_id",
+        name: "userId",
         type: "uuid",
         isNullable: true,
       })
@@ -23,7 +23,7 @@ export class IncludeRelationUserEvent1600376988114
       "events",
       new TableForeignKey({
         name: "event-user",
-        columnNames: ["user_id"],
+        columnNames: ["userId"],
         referencedColumnNames: ["id"],
         referencedTableName: "users",
         onDelete: "SET NULL",
@@ -34,7 +34,7 @@ export class IncludeRelationUserEvent1600376988114
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropForeignKey("events", "event-user");
-    await queryRunner.dropColumn("events", "user_id");
+    await queryRunner.dropColumn("events", "userId");
     await queryRunner.addColumn(
       "events",
       new TableColumn({

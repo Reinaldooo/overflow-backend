@@ -19,19 +19,19 @@ export default class Event {
   id: string;
 
   @Column()
-  user_id: string;
+  userId: string;
 
   // user field will return User obj. Check docs for more
   @ManyToOne(() => User)
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: "userId" })
   user: User;
 
   @Column("timestamp with time zone")
   date: Date;
 
   @CreateDateColumn()
-  created_at: Date;
+  createdAt: Date;
 
   @UpdateDateColumn()
-  updated_at: Date;
+  updatedAt: Date;
 }

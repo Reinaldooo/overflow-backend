@@ -17,7 +17,7 @@ eventsRouter.get("/", async (_, res) => {
 
 eventsRouter.post("/", async (req, res) => {
   try {
-    const { user_id, date } = req.body;
+    const { userId, date } = req.body;
 
     const parsedDate = parseISO(date);
 
@@ -25,7 +25,7 @@ eventsRouter.post("/", async (req, res) => {
 
     const event = await createEvent.execute({
       date: parsedDate,
-      user_id,
+      userId,
     });
 
     return res.json(event);
