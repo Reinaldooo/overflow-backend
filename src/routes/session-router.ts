@@ -5,7 +5,7 @@ import AuthUser from "@services/AuthUser";
 const sessionRouter = Router();
 
 sessionRouter.post("/", async (req, res) => {
-  //> /session
+  //---> /session
   // Body fields: email, passwd
   try {
     const { email, passwd } = req.body;

@@ -10,7 +10,7 @@ const userRouter = Router();
 const upload = multer(multerConfig);
 
 userRouter.post("/", async (req, res) => {
-  //> /users
+  //---> /users
   // Body fields: name, email, passwd
   try {
     const { name, email, passwd } = req.body;
@@ -33,7 +33,7 @@ userRouter.post(
   checkAuth,
   upload.single("avatar"),
   async (req, res) => {
-    //> /users/avatar
+    //---> /users/avatar
     if (!req.file)
       return res.status(401).json({ error: "Invalid or missing file." });
     try {

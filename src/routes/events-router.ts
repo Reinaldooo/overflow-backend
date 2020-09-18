@@ -13,7 +13,7 @@ const eventsRouter = Router();
 eventsRouter.use(checkAuth);
 
 eventsRouter.get("/", async (_, res) => {
-  //> /events
+  //---> /events
   // Token required
   const eventsRepository = getCustomRepository(EventsRepository);
   const events = await eventsRepository.find();
@@ -21,7 +21,7 @@ eventsRouter.get("/", async (_, res) => {
 });
 
 eventsRouter.post("/", async (req, res) => {
-  //> /events
+  //---> /events
   // Token required
   // Body fields: userId, date
   try {
