@@ -24,7 +24,7 @@ export default class User {
   @Column()
   passwd: string;
 
-  @Column()
+  @Column({ nullable: true })
   avatar: string;
 
   @CreateDateColumn()
