@@ -4,9 +4,9 @@ import { getCustomRepository } from "typeorm";
 // This function is used to load repos that i created (custom)
 // If a repository is the stantard without custom methods, i can just use "getRepository"
 //
-import EventsRepository from "../repositories/EventsRepository";
-import CreateEvent from "@services/CreateEvent";
-import checkAuth from "../middleware/checkAuth";
+import EventsRepository from "@modules/events/repositories/EventsRepository";
+import CreateEvent from "@modules/events/services/CreateEvent";
+import checkAuth from "@modules/users/infra/http/middleware/checkAuth";
 
 const eventsRouter = Router();
 

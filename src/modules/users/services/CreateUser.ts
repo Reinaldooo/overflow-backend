@@ -2,8 +2,8 @@ import { getRepository } from "typeorm";
 // This function is used to load a default repo containing typeorm methods
 import { hash } from "bcryptjs";
 //
-import User from "@models/User";
-import AppError from "src/errors/AppError";
+import User from "../infra/typeorm/entities/User";
+import AppError from "@shared/errors/AppError";
 // A custom User Repo wasn't needed
 
 interface RequestModel {

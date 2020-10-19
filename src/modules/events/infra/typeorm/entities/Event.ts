@@ -8,7 +8,7 @@ import {
   JoinColumn,
 } from "typeorm";
 //
-import User from "./User";
+import User from "@modules/users/infra/typeorm/entities/User";
 
 // This is a decorator, it works like a function and the class is as argument
 // Something like: Entity(class)

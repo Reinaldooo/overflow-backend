@@ -3,9 +3,9 @@ import { getCustomRepository } from "typeorm";
 // This function is used to load repos that i created (custom)
 // If a repository is the stantard without custom methods, i can just use "getRepository"
 //
-import Event from "@models/Event";
+import Event from "../infra/typeorm/entities/Event";
 import EventsRepository from "../repositories/EventsRepository";
-import AppError from "src/errors/AppError";
+import AppError from "@shared/errors/AppError";
 
 interface RequestModel {
   userId: string;

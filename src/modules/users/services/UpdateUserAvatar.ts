@@ -2,9 +2,9 @@ import { getRepository } from "typeorm";
 import path from "path";
 import { promises } from "fs";
 //
-import User from "@models/User";
+import User from "../infra/typeorm/entities/User";
 import { uploadsDir } from "@config/upload";
-import AppError from "src/errors/AppError";
+import AppError from "@shared/errors/AppError";
 
 interface RequestModel {
   userId: string;
