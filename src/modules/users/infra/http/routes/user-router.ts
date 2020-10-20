@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { container } from "tsyringe";
 import multer from "multer";
 //
 import { multerConfig } from "@config/upload";
@@ -14,7 +15,7 @@ userRouter.post("/", async (req, res) => {
   // Body fields: name, email, passwd
   const { name, email, passwd } = req.body;
 
-  const createUser = new CreateUser();
+  const createUser = container.resolve(CreateUser);
 
   const user = await createUser.execute({
     name,
@@ -33,7 +34,7 @@ userRouter.post(
     if (!req.file)
       return res.status(401).json({ error: "Invalid or missing file." });
 
-    const updateUserAvatar = new UpdateUserAvatar();
+    const updateUserAvatar = container.resolve(UpdateUserAvatar);
 
     const { avatar, name } = await updateUserAvatar.execute({
       userId: req.userId,

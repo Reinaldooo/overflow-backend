@@ -1,21 +1,26 @@
-import { getRepository } from "typeorm";
 import path from "path";
 import { promises } from "fs";
+import { injectable, inject } from "tsyringe";
 //
 import User from "../infra/typeorm/entities/User";
 import { uploadsDir } from "@config/upload";
 import AppError from "@shared/errors/AppError";
+import IUsersRepository from "../repositories/IUsersRepository";
 
 interface RequestModel {
   userId: string;
   avatarName: string;
 }
 
+@injectable()
 export default class UpdateUserAvatar {
-  public async execute({ userId, avatarName }: RequestModel): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
+  ) {}
 
-    const user = await userRepository.findOne(userId);
+  public async execute({ userId, avatarName }: RequestModel): Promise<User> {
+    const user = await this.usersRepository.findById(userId);
 
     if (!user) throw new AppError("Invalid user id.");
 
@@ -34,7 +39,7 @@ export default class UpdateUserAvatar {
     }
 
     user.avatar = avatarName;
-    await userRepository.save(user);
+    await this.usersRepository.save(user);
 
     return user;
   }

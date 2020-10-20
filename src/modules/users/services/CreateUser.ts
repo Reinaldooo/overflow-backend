@@ -1,10 +1,9 @@
-import { getRepository } from "typeorm";
-// This function is used to load a default repo containing typeorm methods
 import { hash } from "bcryptjs";
+import { injectable, inject } from "tsyringe";
 //
 import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
-// A custom User Repo wasn't needed
+import IUsersRepository from "../repositories/IUsersRepository";
 
 interface RequestModel {
   name: string;
@@ -12,14 +11,15 @@ interface RequestModel {
   passwd: string;
 }
 
+@injectable()
 export default class CreateUser {
-  // Each service consists of a simple execute method that handle all business rules
-  public async execute({ name, email, passwd }: RequestModel): Promise<User> {
-    const userRepository = getRepository(User);
+  constructor(
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
+  ) {}
 
-    const userExists = await userRepository.findOne({
-      where: { email },
-    });
+  public async execute({ name, email, passwd }: RequestModel): Promise<User> {
+    const userExists = await this.usersRepository.findByEmail(email);
 
     if (userExists) {
       // throw erros in here and send them back in the route
@@ -28,13 +28,11 @@ export default class CreateUser {
 
     const hashedPasswd = await hash(passwd, 8);
 
-    const user = userRepository.create({
+    const user = await this.usersRepository.create({
       name,
       email,
       passwd: hashedPasswd,
     });
-
-    await userRepository.save(user);
 
     delete user.passwd;
 

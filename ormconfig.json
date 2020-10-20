@@ -7,9 +7,9 @@
   "database": "typecal",
   "synchronize": true,
   "logging": false,
-  "entities": ["src/models/**/*.ts"],
-  "migrations": ["src/db/migrations/**/*.ts"],
+  "entities": ["src/modules/**/infra/typeorm/entities/*.ts"],
+  "migrations": ["src/shared/infra/typeorm/migrations/*.ts"],
   "cli": {
-    "migrationsDir": "src/db/migrations"
+    "migrationsDir": "src/shared/infra/typeorm/migrations"
   }
 }

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { container } from "tsyringe";
 //
 import AuthUser from "@modules/users/services/AuthUser";
 
@@ -8,7 +9,8 @@ sessionRouter.post("/", async (req, res) => {
   //---> /session
   // Body fields: email, passwd
   const { email, passwd } = req.body;
-  const authUser = new AuthUser();
+
+  const authUser = container.resolve(AuthUser);
 
   const { user, token } = await authUser.execute({
     email,
