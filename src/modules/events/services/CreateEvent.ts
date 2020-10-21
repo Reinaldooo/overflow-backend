@@ -21,7 +21,7 @@ export default class CreateEvent {
 
   public async execute({ date, userId }: RequestModel): Promise<Event> {
     if (!date || !userId) {
-      // throw erros in here and send them back in the route
+      // throw errors in here and send them back in the route
       throw new AppError("Missing event info");
     }
 
@@ -30,7 +30,7 @@ export default class CreateEvent {
     const eventExists = await this.eventsRepository.findByDate(eventHour);
 
     if (eventExists) {
-      // throw erros in here and send them back in the route
+      // throw errors in here and send them back in the route
       throw new AppError("This hour is already booked");
     }
 

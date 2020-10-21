@@ -20,3 +20,13 @@ typeorm already has an repo with the main methods
 
 `DTOs`, or Data Transfer Objects are a special type of interface representing
 objects used to create, update and delete data in the app
+
+Later on two kinds of repositories where used, one in the module folder, and
+another in the infra/typeorm folder. The idea here is that the one in the module
+folder is the reference to the ones inside infra folder, thats why they `implements`
+the repo in the module folder. If in the future i start using another orm, it too
+should `implements` the parent repo.
+
+`Fakes` are repos used for unit tests. As in the tests i can't use the real db,
+fakes are used to simulate it's functionality. Real db will be tested on other
+kinds of tests.

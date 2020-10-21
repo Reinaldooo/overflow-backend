@@ -1,31 +1,25 @@
 {
-  // It's good to reload VS Code window after making changes here
   "compilerOptions": {
     "target": "es2017",
-    //---- Node already supports new features on 2017
     "resolveJsonModule": true,
-    //---- Allows me to import json modules
     "module": "commonjs",
     "lib": ["es6"],
     "outDir": "./dist",
     "rootDir": "./src",
     "removeComments": true,
     "typeRoots": ["./node_modules/@types", "./src/@types"],
-    //---- List of folders ts ill look for types, the second one is used if i need to include types
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    //---- Allow decorators for typeform
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    //---- paths allows imports to be made with @folder
-    "baseUrl": ".",
+    "baseUrl": "./src",
     "paths": {
-      "@services/*": ["src/services/*"],
-      "@models/*": ["src/models/*"],
-      "@config/*": ["src/config/*"],
-      "@modules/*": ["src/modules/*"],
-      "@shared/*": ["src/shared/*"]
+      "@services/*": ["services/*"],
+      "@models/*": ["models/*"],
+      "@config/*": ["config/*"],
+      "@modules/*": ["modules/*"],
+      "@shared/*": ["shared/*"]
     }
   }
 }
