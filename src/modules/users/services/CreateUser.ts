@@ -36,7 +36,7 @@ export default class CreateUser {
       passwd: hashedPasswd,
     });
 
-    delete user.passwd;
+    // delete user.passwd;
 
     return user;
   }

@@ -1,11 +1,14 @@
 import AppError from "../../../shared/errors/AppError";
+import FakeHashProvider from "../providers/HashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import CreateUser from "./CreateUser";
 
 describe("Create User", () => {
   it("Should be able to create a new user", async () => {
     const fakeUsersRepository = new FakeUsersRepository();
-    const createUser = new CreateUser(fakeUsersRepository);
+    const fakeHashProvider = new FakeHashProvider();
+
+    const createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
 
     const user = await createUser.execute({
       name: "Reinaldo",
@@ -18,7 +21,9 @@ describe("Create User", () => {
 
   it("Should not be able to create a new user with a existent email", async () => {
     const fakeUsersRepository = new FakeUsersRepository();
-    const createUser = new CreateUser(fakeUsersRepository);
+    const fakeHashProvider = new FakeHashProvider();
+
+    const createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
 
     await createUser.execute({
       name: "Reinaldo",

@@ -1,4 +1,3 @@
-import { compare } from "bcryptjs";
 import { injectable, inject } from "tsyringe";
 import { sign } from "jsonwebtoken";
 //
@@ -6,6 +5,7 @@ import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
 import authConfig from "@config/auth";
 import IUsersRepository from "../repositories/IUsersRepository";
+import IHashProvider from "../providers/HashProvider/models/IHashProvider";
 
 interface RequestModel {
   email: string;
@@ -21,7 +21,9 @@ interface ResponseModel {
 export default class AuthUser {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("HashProvider")
+    private hashProvider: IHashProvider
   ) {}
 
   public async execute({
@@ -30,8 +32,7 @@ export default class AuthUser {
   }: RequestModel): Promise<ResponseModel> {
     const user = await this.usersRepository.findByEmail(email);
     if (!user) throw new AppError("Invalid mail/password.");
-
-    const passMatch = await compare(passwd, user.passwd);
+    const passMatch = await this.hashProvider.compareHash(passwd, user.passwd);
     if (!passMatch) throw new AppError("Invalid mail/password.");
 
     const { jwt } = authConfig;
