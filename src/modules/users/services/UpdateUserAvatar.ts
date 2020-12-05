@@ -3,9 +3,9 @@ import { promises } from "fs";
 import { injectable, inject } from "tsyringe";
 //
 import User from "../infra/typeorm/entities/User";
-import { uploadsDir } from "@config/upload";
 import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";
+import IStorageProvider from "@shared/container/providers/StorageProvider/models/IStorageProvider";
 
 interface RequestModel {
   userId: string;
@@ -16,7 +16,9 @@ interface RequestModel {
 export default class UpdateUserAvatar {
   constructor(
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("StorageProvider")
+    private storageProvider: IStorageProvider
   ) {}
 
   public async execute({ userId, avatarName }: RequestModel): Promise<User> {
@@ -25,20 +27,10 @@ export default class UpdateUserAvatar {
     if (!user) throw new AppError("Invalid user id.");
 
     if (user.avatar) {
-      const avatarPath = path.join(uploadsDir, user.avatar);
-      try {
-        // This try/catch is needed to avoid exception if there isn't a file
-        // with the name specified
-
-        // Check if avatar file exists, and if it does, delete it
-        // stat method returns info about a file IF it exists
-        // unlink method will delete the file
-        const avatarFileExists = await promises.stat(avatarPath);
-        if (avatarFileExists) await promises.unlink(avatarPath);
-      } catch {}
+      await this.storageProvider.delete(user.avatar);
     }
 
-    user.avatar = avatarName;
+    user.avatar = await this.storageProvider.save(avatarName);
     await this.usersRepository.save(user);
 
     return user;

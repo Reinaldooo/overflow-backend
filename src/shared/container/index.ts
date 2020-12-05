@@ -1,6 +1,8 @@
 import { container } from "tsyringe";
 
+// Other dependencies import
 import "@modules/users/providers";
+import "./providers";
 
 // tsyringe is a dependency injection library.
 // This container will control all injections in the app.

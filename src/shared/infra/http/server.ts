@@ -4,7 +4,7 @@ import cors from "cors";
 import "express-async-errors";
 //
 import routes from "./routes";
-import { uploadsDir } from "@config/upload";
+import { uploadsDirConfig } from "@config/upload";
 import AppError from "@shared/errors/AppError";
 
 import "@shared/infra/typeorm";
@@ -14,7 +14,7 @@ const server = express();
 
 server.use(express.json());
 server.use(cors());
-server.use("/files", express.static(uploadsDir));
+server.use("/files", express.static(uploadsDirConfig.destination));
 server.use(routes);
 
 server.use((e: Error, req: Request, res: Response, next: NextFunction) => {

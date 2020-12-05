@@ -2,13 +2,14 @@ import { resolve, extname } from "path";
 import { randomBytes } from "crypto";
 import multer from "multer";
 
+const tmp = resolve(__dirname, "..", "..", "tmp");
 const destination = resolve(__dirname, "..", "..", "uploads");
 
-export const uploadsDir = destination;
-// This dir will be used to delete replace avatars on UpdateUserAvatar service
+export const uploadsDirConfig = { destination, tmp };
+// Multer will always use a tmp folder
 export const multerConfig = {
   storage: multer.diskStorage({
-    destination,
+    destination: tmp,
     filename(_, file, cb) {
       // As for the file name, crypto function creates a random set of
       // chars and concat it with the original extension
