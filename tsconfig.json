@@ -19,7 +19,8 @@
       "@models/*": ["models/*"],
       "@config/*": ["config/*"],
       "@modules/*": ["modules/*"],
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      "@providers/*": ["shared/container/providers/*"]
     }
   }
 }

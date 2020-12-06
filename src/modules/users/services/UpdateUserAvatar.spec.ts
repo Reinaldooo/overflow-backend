@@ -1,6 +1,6 @@
 import AppError from "../../../shared/errors/AppError";
 
-import FakeStorageProvider from "@shared/container/providers/StorageProvider/fakes/FakeStorageProvider";
+import FakeStorageProvider from "@providers/StorageProvider/fakes/FakeStorageProvider";
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import UpdateUserAvatar from "./UpdateUserAvatar";
 
