@@ -24,7 +24,7 @@ export default class CreateUser {
     const userExists = await this.usersRepository.findByEmail(email);
 
     if (userExists) {
-      // throw erros in here and send them back in the route
+      // throw errors in here and send them back in the route
       throw new AppError("Email already used.");
     }
 
