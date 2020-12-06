@@ -27,7 +27,7 @@ describe("Create Event", () => {
       userId: "testId",
     });
 
-    expect(
+    await expect(
       createEvent.execute({
         date: eventDate,
         userId: "testId",
@@ -41,13 +41,13 @@ describe("Create Event", () => {
 
     const eventDate = new Date();
 
-    expect(
+    await expect(
       createEvent.execute({
         date: eventDate,
         userId: undefined,
       })
     ).rejects.toBeInstanceOf(AppError);
-    expect(
+    await expect(
       createEvent.execute({
         userId: "testId",
         date: undefined,
