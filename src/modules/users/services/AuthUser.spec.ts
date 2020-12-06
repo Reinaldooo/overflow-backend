@@ -4,14 +4,20 @@ import FakeHashProvider from "../providers/HashProvider/fakes/FakeHashProvider";
 import CreateUser from "./CreateUser";
 import AuthUser from "./AuthUser";
 
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
+let authUser: AuthUser;
+let createUser: CreateUser;
+
 describe("Auth User", () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
+    authUser = new AuthUser(fakeUsersRepository, fakeHashProvider);
+  });
+  //
   it("Should be able to auth user", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
-    const authUser = new AuthUser(fakeUsersRepository, fakeHashProvider);
-
     const user = await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",
@@ -26,11 +32,8 @@ describe("Auth User", () => {
     expect(res).toHaveProperty("token");
     expect(res.user).toEqual(user);
   });
+  //
   it("Should not be able to auth invalid user", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-    const authUser = new AuthUser(fakeUsersRepository, fakeHashProvider);
-
     await expect(
       authUser.execute({
         email: "rewifetri@gmail.com",
@@ -38,13 +41,8 @@ describe("Auth User", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  //
   it("Should not be able to auth user with incorrect passwd", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
-    const authUser = new AuthUser(fakeUsersRepository, fakeHashProvider);
-
     await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",

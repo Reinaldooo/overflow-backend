@@ -21,6 +21,7 @@ describe("Password recovery", () => {
       fakePassRecoveryTokenRepository
     );
   });
+  //
   it("Should be able to recover passwd using email", async () => {
     const sendMail = jest.spyOn(fakeMailProvider, "sendMail");
 
@@ -36,6 +37,7 @@ describe("Password recovery", () => {
 
     expect(sendMail).toHaveBeenCalled();
   });
+  //
   it("Should not be able to recover passwd using invalid email", async () => {
     await expect(
       forgotPasswdEmail.execute({
@@ -43,6 +45,7 @@ describe("Password recovery", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  //
   it("Should generate forgot passwd token", async () => {
     const generateToken = jest.spyOn(
       fakePassRecoveryTokenRepository,

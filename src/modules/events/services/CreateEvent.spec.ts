@@ -2,11 +2,16 @@ import AppError from "@shared/errors/AppError";
 import FakeEventsRepository from "../repositories/fakes/FakeEventsRepository";
 import CreateEvent from "./CreateEvent";
 
-describe("Create Event", () => {
-  it("Should be able to create a new event", async () => {
-    const fakeEventsRepository = new FakeEventsRepository();
-    const createEvent = new CreateEvent(fakeEventsRepository);
+let fakeEventsRepository: FakeEventsRepository;
+let createEvent: CreateEvent;
 
+describe("Create Event", () => {
+  beforeEach(() => {
+    fakeEventsRepository = new FakeEventsRepository();
+    createEvent = new CreateEvent(fakeEventsRepository);
+  });
+  //
+  it("Should be able to create a new event", async () => {
     const event = await createEvent.execute({
       date: new Date(),
       userId: "testId",
@@ -15,11 +20,8 @@ describe("Create Event", () => {
     expect(event).toHaveProperty("id");
     expect(event.userId).toBe("testId");
   });
-
+  //
   it("Should not be able to create a new event in the same date", async () => {
-    const fakeEventsRepository = new FakeEventsRepository();
-    const createEvent = new CreateEvent(fakeEventsRepository);
-
     const eventDate = new Date();
 
     await createEvent.execute({
@@ -34,11 +36,8 @@ describe("Create Event", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
-
+  //
   it("Should not be able to create a new event if date or userId are not provided", async () => {
-    const fakeEventsRepository = new FakeEventsRepository();
-    const createEvent = new CreateEvent(fakeEventsRepository);
-
     const eventDate = new Date();
 
     await expect(

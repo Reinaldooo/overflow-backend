@@ -4,16 +4,22 @@ import FakeStorageProvider from "@providers/StorageProvider/fakes/FakeStoragePro
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import UpdateUserAvatar from "./UpdateUserAvatar";
 
-describe("Update Avatar", () => {
-  it("Should be able to update user avatar", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
+let fakeUsersRepository: FakeUsersRepository;
+let fakeStorageProvider: FakeStorageProvider;
+let updateUserAvatar: UpdateUserAvatar;
 
-    const updateUserAvatar = new UpdateUserAvatar(
+describe("Update Avatar", () => {
+  beforeEach(() => {
+    fakeUsersRepository = new FakeUsersRepository();
+    fakeStorageProvider = new FakeStorageProvider();
+
+    updateUserAvatar = new UpdateUserAvatar(
       fakeUsersRepository,
       fakeStorageProvider
     );
-
+  });
+  //
+  it("Should be able to update user avatar", async () => {
     // The fake users repo was used here because this test focus is not on the
     // user creation
     const user = await fakeUsersRepository.create({
@@ -31,15 +37,8 @@ describe("Update Avatar", () => {
     // correct avatar name below
     expect(user.avatar).toBe("avatar.jpg");
   });
+  //
   it("Should not be able to update avatar of invalid user", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateUserAvatar = new UpdateUserAvatar(
-      fakeUsersRepository,
-      fakeStorageProvider
-    );
-
     await expect(
       updateUserAvatar.execute({
         userId: "invalid-id",
@@ -47,15 +46,8 @@ describe("Update Avatar", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  //
   it("Should delete old avatar if it exists before updating it", async () => {
-    const fakeUsersRepository = new FakeUsersRepository();
-    const fakeStorageProvider = new FakeStorageProvider();
-
-    const updateUserAvatar = new UpdateUserAvatar(
-      fakeUsersRepository,
-      fakeStorageProvider
-    );
-
     // The function spyOn will track if a function as called
     const deleteFile = jest.spyOn(fakeStorageProvider, "delete");
 
