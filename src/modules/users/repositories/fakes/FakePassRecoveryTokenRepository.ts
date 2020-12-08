@@ -10,12 +10,24 @@ export default class FakePassRecoveryTokenRepository
   public async generate(userId: string): Promise<PassRecoveryToken> {
     const passRecoveryToken = new PassRecoveryToken();
 
+    const time = new Date();
+
     Object.assign(passRecoveryToken, {
       id: uuidv4(),
       userId,
+      createdAt: time,
+      updatedAt: time,
     });
 
     this.passRecoveryTokens.push(passRecoveryToken);
     return passRecoveryToken;
+  }
+  public async findById(
+    tokenId: string
+  ): Promise<PassRecoveryToken | undefined> {
+    const foundToken = this.passRecoveryTokens.find(
+      token => token.id === tokenId
+    );
+    return foundToken;
   }
 }
