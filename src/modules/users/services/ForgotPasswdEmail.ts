@@ -1,4 +1,5 @@
 import { injectable, inject } from "tsyringe";
+import path from "path";
 //
 import IUsersRepository from "../repositories/IUsersRepository";
 import IPassRecoveryTokenRepository from "../repositories/IPassRecoveryTokenRepository";
@@ -31,6 +32,13 @@ export default class ForgotPasswdEmail {
       user.id
     );
 
+    const forgotPasswdTemplate = path.resolve(
+      __dirname,
+      "..",
+      "views",
+      "forgotPasswd.hbs"
+    );
+
     await this.mailProvider.sendMail({
       to: {
         name: user.name,
@@ -38,11 +46,10 @@ export default class ForgotPasswdEmail {
       },
       subject: "Typecal - Recuperação de senha",
       templateData: {
-        template: `Olá, {{name}}!
-        Token teste: {{token}}`,
+        file: forgotPasswdTemplate,
         variables: {
           name: user.name,
-          token,
+          link: `http://localhost:3000/passwd/forgot?tk=${token}`,
         },
       },
     });
