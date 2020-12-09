@@ -1,7 +1,5 @@
 import { injectable, inject } from "tsyringe";
 //
-// import User from "../infra/typeorm/entities/User";
-// import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";
 import IPassRecoveryTokenRepository from "../repositories/IPassRecoveryTokenRepository";
 import IMailProvider from "@providers/MailProvider/models/IMailProvider";
@@ -29,12 +27,24 @@ export default class ForgotPasswdEmail {
       throw new AppError("User does not exist.");
     }
 
-    const { id } = await this.passRecoveryTokenRepository.generate(user.id);
-
-    await this.mailProvider.sendMail(
-      email,
-      `Pedido de recuperação de senha recebido.
-      Token: ${id}`
+    const { id: token } = await this.passRecoveryTokenRepository.generate(
+      user.id
     );
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: "Typecal - Recuperação de senha",
+      templateData: {
+        template: `Olá, {{name}}!
+        Token teste: {{token}}`,
+        variables: {
+          name: user.name,
+          token,
+        },
+      },
+    });
   }
 }
