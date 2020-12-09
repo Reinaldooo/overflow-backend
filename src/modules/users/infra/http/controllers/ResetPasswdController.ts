@@ -6,7 +6,7 @@ import ResetPasswd from "@modules/users/services/ResetPasswd";
 export default class ResetPasswdController {
   public async create(req: Request, res: Response): Promise<Response> {
     //> /passwd/reset
-    // Body fields: name, email, passwd
+    // Body fields: passwd,tokenId
     const { passwd, tokenId } = req.body;
 
     const resetPasswd = container.resolve(ResetPasswd);
@@ -15,6 +15,6 @@ export default class ResetPasswdController {
       passwd,
       tokenId,
     });
-    return res.status(204);
+    return res.status(204).json();
   }
 }

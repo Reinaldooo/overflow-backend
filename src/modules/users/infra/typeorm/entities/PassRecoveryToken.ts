@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("pass_recovery_tokens")
+@Entity("passRecoveryTokens")
 export default class PassRecoveryToken {
   // Constructor is not needed since typeorm will do this behind the scenes
   @PrimaryGeneratedColumn("uuid")
@@ -15,9 +15,9 @@ export default class PassRecoveryToken {
   @Column()
   userId: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: Date;
 }

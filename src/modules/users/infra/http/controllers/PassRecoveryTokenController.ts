@@ -6,7 +6,7 @@ import ForgotPasswdEmail from "@modules/users/services/ForgotPasswdEmail";
 export default class PassRecoveryTokenController {
   public async create(req: Request, res: Response): Promise<Response> {
     //> /passwd/forgot
-    // Body fields: name, email, passwd
+    // Body fields: email
     const { email } = req.body;
 
     const forgotPasswdEmail = container.resolve(ForgotPasswdEmail);
@@ -14,6 +14,6 @@ export default class PassRecoveryTokenController {
     await forgotPasswdEmail.execute({
       email,
     });
-    return res.status(204);
+    return res.status(201).json();
   }
 }

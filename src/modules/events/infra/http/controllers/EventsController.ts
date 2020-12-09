@@ -5,6 +5,12 @@ import { container } from "tsyringe";
 import CreateEvent from "@modules/events/services/CreateEvent";
 
 export default class EventsController {
+  public async index(req: Request, res: Response): Promise<Response> {
+    //---> /events
+    // Token required
+    const { userId } = req;
+    return res.json();
+  }
   public async create(req: Request, res: Response): Promise<Response> {
     //---> /events
     // Token required

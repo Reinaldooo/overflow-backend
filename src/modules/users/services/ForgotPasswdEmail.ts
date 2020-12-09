@@ -18,7 +18,7 @@ export default class ForgotPasswdEmail {
     private usersRepository: IUsersRepository,
     @inject("MailProvider")
     private mailProvider: IMailProvider,
-    @inject("PassRecoveryTokensRepository")
+    @inject("PassRecoveryTokenRepository")
     private passRecoveryTokenRepository: IPassRecoveryTokenRepository
   ) {}
 
@@ -29,11 +29,12 @@ export default class ForgotPasswdEmail {
       throw new AppError("User does not exist.");
     }
 
-    await this.passRecoveryTokenRepository.generate(user.id);
+    const { id } = await this.passRecoveryTokenRepository.generate(user.id);
 
-    this.mailProvider.sendMail(
+    await this.mailProvider.sendMail(
       email,
-      "Pedido de recuperação de senha recebido."
+      `Pedido de recuperação de senha recebido.
+      Token: ${id}`
     );
   }
 }

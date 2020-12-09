@@ -25,6 +25,9 @@ import EventsRepository from "@modules/events/infra/typeorm/repositories/EventsR
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 import UsersRepository from "@modules/users/infra/typeorm/repositories/UsersRepository";
 
+import IPassRecoveryTokenRepository from "@modules/users/repositories/IPassRecoveryTokenRepository";
+import PassRecoveryTokenRepository from "@modules/users/infra/typeorm/repositories/PassRecoveryTokenRepository";
+
 container.registerSingleton<IEventsRepository>(
   "EventsRepository",
   EventsRepository
@@ -33,4 +36,9 @@ container.registerSingleton<IEventsRepository>(
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
   UsersRepository
+);
+
+container.registerSingleton<IPassRecoveryTokenRepository>(
+  "PassRecoveryTokenRepository",
+  PassRecoveryTokenRepository
 );

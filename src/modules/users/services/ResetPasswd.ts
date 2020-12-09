@@ -1,5 +1,5 @@
 import { injectable, inject } from "tsyringe";
-import { differenceInHours } from "date-fns";
+import { differenceInHours, startOfHour } from "date-fns";
 //
 // import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
@@ -17,7 +17,7 @@ export default class ResetPasswd {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
-    @inject("PassRecoveryTokensRepository")
+    @inject("PassRecoveryTokenRepository")
     private passRecoveryTokenRepository: IPassRecoveryTokenRepository,
     @inject("HashProvider")
     private hashProvider: IHashProvider

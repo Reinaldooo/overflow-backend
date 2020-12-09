@@ -8,12 +8,8 @@ const eventsRouter = Router();
 
 eventsRouter.use(checkAuth);
 
-// eventsRouter.get("/", async (_, res) => {
-//   //---> /events
-//   // Token required
-//   const events = await eventsRepository.find();
-//   return res.json(events);
-// });
+//---> /events
+eventsRouter.get("/", eventsController.index);
 
 //---> /events
 eventsRouter.post("/", eventsController.create);
