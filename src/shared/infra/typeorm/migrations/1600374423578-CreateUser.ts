@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
-export class CreateEvent1600374423578 implements MigrationInterface {
+export class CreateUser1600374423578 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     // `uuid_generate_v4()` extension must be activated on db.
     // CREATE EXTENSION IF NOT EXISTS "uuid-ossp"
