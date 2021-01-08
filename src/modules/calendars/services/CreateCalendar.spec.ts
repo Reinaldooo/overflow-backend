@@ -1,55 +1,61 @@
 import AppError from "@shared/errors/AppError";
 import FakeCalendarsRepository from "../repositories/fakes/FakeCalendarsRepository";
+import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
+import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
 import CreateCalendar from "./CreateCalendar";
+import CreateUser from "@modules/users/services/CreateUser";
 
 let fakeCalendarsRepository: FakeCalendarsRepository;
+let fakeUsersRepository: FakeUsersRepository;
+let fakeHashProvider: FakeHashProvider;
 let createCalendar: CreateCalendar;
+let createUser: CreateUser;
 
 describe("Create Calendar", () => {
   beforeEach(() => {
     fakeCalendarsRepository = new FakeCalendarsRepository();
-    createCalendar = new CreateCalendar(fakeCalendarsRepository);
+    fakeUsersRepository = new FakeUsersRepository();
+    createCalendar = new CreateCalendar(fakeCalendarsRepository, fakeUsersRepository);    
+    fakeHashProvider = new FakeHashProvider();
+    createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
   });
   //
   it("Should be able to create a new calendar", async () => {
+    const user = await createUser.execute({
+      name: "Reinaldo",
+      email: "rewifetri@gmail.com",
+      passwd: "123456",
+    });
+
     const calendar = await createCalendar.execute({
-      date: new Date(),
-      userId: "testId",
+      userId: user.id,
+      name: "Trabalho",
     });
 
     expect(calendar).toHaveProperty("id");
-    expect(calendar.userId).toBe("testId");
+    expect(calendar.users[0].id).toBe(user.id);
   });
   //
-  it("Should not be able to create a new calendar in the same date", async () => {
-    const eventDate = new Date();
-
-    await createCalendar.execute({
-      date: eventDate,
-      userId: "testId",
-    });
-
+  it("Should not be able to create a new calendar without name or userId", async () => {
     await expect(
       createCalendar.execute({
-        date: eventDate,
-        userId: "testId",
+        userId: "99572649-f0a4-469f-b11b-f23ee0a5bf58",
+        name: "",
       })
     ).rejects.toBeInstanceOf(AppError);
-  });
-  //
-  it("Should not be able to create a new calendar if date or userId are not provided", async () => {
-    const eventDate = new Date();
-
     await expect(
       createCalendar.execute({
-        date: eventDate,
         userId: undefined,
+        name: "Trabalho",
       })
     ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to create a new calendar if userId is invalid", async () => {
     await expect(
       createCalendar.execute({
         userId: "testId",
-        date: undefined,
+        name: "test",
       })
     ).rejects.toBeInstanceOf(AppError);
   });

@@ -3,15 +3,15 @@ import { Router } from "express";
 import checkAuth from "@modules/users/infra/http/middleware/checkAuth";
 import CalendarsController from "../controllers/CalendarsController";
 
-const eventsController = new CalendarsController();
-const eventsRouter = Router();
+const calendarsController = new CalendarsController();
+const calendarsRouter = Router();
 
-eventsRouter.use(checkAuth);
-
-//---> /calendars
-eventsRouter.get("/", eventsController.index);
+calendarsRouter.use(checkAuth);
 
 //---> /calendars
-eventsRouter.post("/", eventsController.create);
+calendarsRouter.get("/", calendarsController.index);
 
-export default eventsRouter;
+//---> /calendars
+calendarsRouter.post("/", calendarsController.create);
+
+export default calendarsRouter;

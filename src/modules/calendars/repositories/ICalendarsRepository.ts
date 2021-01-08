@@ -6,5 +6,5 @@ import ICreateCalendarDTO from "../dtos/ICreateCalendarDTO";
 // if it is SQL or NoSQL and etc, but it should have the methods below
 export default interface ICalendarsRepository {
   create(data: ICreateCalendarDTO): Promise<Calendar>;
-  findByDate(date: Date): Promise<Calendar | undefined>;
+  findByUserId(userId: string): Promise<Calendar[] | undefined>;
 }

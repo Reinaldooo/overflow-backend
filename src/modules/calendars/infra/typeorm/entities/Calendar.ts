@@ -22,7 +22,6 @@ export default class Calendar {
   name: string;
 
   @ManyToMany(() => User, user => user.calendars)
-  @JoinTable({ name: "calendars_and_users" })
   users: User[];
 
   @CreateDateColumn({ type: "timestamptz" })

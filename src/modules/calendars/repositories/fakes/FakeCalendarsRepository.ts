@@ -7,16 +7,16 @@ import Calendar from "../../infra/typeorm/entities/Calendar";
 
 export default class FakeCalendarsRepository implements ICalendarsRepository {
   private calendars: Calendar[] = [];
-  public async findByDate(date: Date): Promise<Calendar | undefined> {
-    const foundCalendar = this.calendars.find(calendar =>
-      isEqual(calendar.date, date)
+  public async findByUserId(userId: string): Promise<Calendar[] | undefined> {
+    const foundCalendars = this.calendars.filter(calendar =>
+      calendar.users?.find(u => u.id === userId)
     );
-    return foundCalendar;
+    return foundCalendars;
   }
 
-  public async create({ userId, date }: ICreateCalendarDTO): Promise<Calendar> {
+  public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
     const calendar = new Calendar();
-    Object.assign(calendar, { id: uuidv4(), date, userId });
+    Object.assign(calendar, { id: uuidv4(), name, users: [user] });
     this.calendars.push(calendar);
     return calendar;
   }

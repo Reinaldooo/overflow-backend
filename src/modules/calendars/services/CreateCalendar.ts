@@ -1,13 +1,13 @@
-import { startOfHour } from "date-fns";
 import { injectable, inject } from "tsyringe";
 //
 import AppError from "@shared/errors/AppError";
 import Calendar from "../infra/typeorm/entities/Calendar";
 import ICalendarsRepository from "../repositories/ICalendarsRepository";
+import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 
 interface RequestModel {
   userId: string;
-  date: Date;
+  name: string;
 }
 
 @injectable()
@@ -16,27 +16,27 @@ export default class CreateCalendar {
 
   constructor(
     @inject("CalendarsRepository")
-    private eventsRepository: ICalendarsRepository
+    private calendarsRepository: ICalendarsRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository
   ) {}
 
-  public async execute({ date, userId }: RequestModel): Promise<Calendar> {
-    if (!date || !userId) {
+  public async execute({ name, userId }: RequestModel): Promise<Calendar> {
+    if (!name || !userId) {
       // throw errors in here and send them back in the route
       throw new AppError("Missing calendar info");
     }
 
-    const eventHour = startOfHour(date);
+    const user = await this.usersRepository.findById(userId);
 
-    const eventExists = await this.eventsRepository.findByDate(eventHour);
-
-    if (eventExists) {
+    if (!user) {
       // throw errors in here and send them back in the route
-      throw new AppError("This hour is already booked");
+      throw new AppError("Invalid user.");
     }
 
-    const calendar = await this.eventsRepository.create({
-      userId,
-      date: eventHour,
+    const calendar = await this.calendarsRepository.create({
+      user,
+      name,
     });
 
     return calendar;

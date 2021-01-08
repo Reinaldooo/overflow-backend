@@ -14,15 +14,16 @@ export default class CalendarRepository implements ICalendarsRepository {
     this.ormRepo = getRepository(Calendar);
   }
 
-  public async findByDate(date: Date): Promise<Calendar | undefined> {
-    const calendar = await this.ormRepo.findOne({
-      where: { date },
-    });
-    return calendar;
+  public async findByUserId(userId: string): Promise<Calendar[] | undefined> {
+    return this.ormRepo
+      .createQueryBuilder("calendar")
+      .leftJoin("calendar.users", "user")
+      .where("user.id = :id", { id: userId })
+      .getMany();
   }
 
-  public async create({ userId, date }: ICreateCalendarDTO): Promise<Calendar> {
-    const calendar = this.ormRepo.create({ userId, date });
+  public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
+    const calendar = this.ormRepo.create({ name, users: [user] });
     await this.ormRepo.save(calendar);
     return calendar;
   }

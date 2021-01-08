@@ -1,4 +1,6 @@
+import User from "@modules/users/infra/typeorm/entities/User"
+
 export default interface ICreateCalendarDTO {
-  userId: string;
-  date: Date;
+  user: User;
+  name: string;
 }
