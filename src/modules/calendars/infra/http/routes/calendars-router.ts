@@ -11,6 +11,9 @@ calendarsRouter.use(checkAuth);
 //---> /calendars
 calendarsRouter.get("/", calendarsController.index);
 
+//---> /calendars/:calendarId
+calendarsRouter.patch("/:calendarId", calendarsController.update);
+
 //---> /calendars
 calendarsRouter.post("/", calendarsController.create);
 

@@ -13,12 +13,15 @@ let createCalendar: CreateCalendar;
 let showUserCalendarsSvc: ShowUserCalendarsSvc;
 let createUser: CreateUser;
 
-describe("Create Calendar", () => {
+describe("Show User Calendars", () => {
   beforeEach(() => {
     fakeCalendarsRepository = new FakeCalendarsRepository();
     fakeUsersRepository = new FakeUsersRepository();
-    createCalendar = new CreateCalendar(fakeCalendarsRepository, fakeUsersRepository);   
-    showUserCalendarsSvc = new ShowUserCalendarsSvc(fakeCalendarsRepository);   
+    createCalendar = new CreateCalendar(
+      fakeCalendarsRepository,
+      fakeUsersRepository
+    );
+    showUserCalendarsSvc = new ShowUserCalendarsSvc(fakeCalendarsRepository);
     fakeHashProvider = new FakeHashProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
   });
@@ -51,14 +54,14 @@ describe("Create Calendar", () => {
       name: "Família",
     });
 
-    const user1Calendars = await showUserCalendarsSvc.execute(user1.id)
+    const user1Calendars = await showUserCalendarsSvc.execute(user1.id);
 
-    expect(user1Calendars).toHaveLength(2)
+    expect(user1Calendars).toHaveLength(2);
   });
   //
   it("Should not be able to show calendars of empty users id", async () => {
-    await expect(
-      showUserCalendarsSvc.execute("")
-    ).rejects.toBeInstanceOf(AppError);
+    await expect(showUserCalendarsSvc.execute("")).rejects.toBeInstanceOf(
+      AppError
+    );
   });
 });

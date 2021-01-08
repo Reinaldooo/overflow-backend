@@ -14,10 +14,26 @@ export default class FakeCalendarsRepository implements ICalendarsRepository {
     return foundCalendars;
   }
 
+  public async findById(calendarId: string): Promise<Calendar | undefined> {
+    const foundCalendar = this.calendars.find(
+      calendar => calendar.id === calendarId
+    );
+    return foundCalendar;
+  }
+
   public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
     const calendar = new Calendar();
     Object.assign(calendar, { id: uuidv4(), name, users: [user] });
     this.calendars.push(calendar);
+    return calendar;
+  }
+
+  public async save(calendar: Calendar): Promise<Calendar> {
+    const calendarIdx = this.calendars.findIndex(c => c.id === calendar.id);
+    if (calendarIdx < 0) {
+      this.calendars.push(calendar);
+    }
+    this.calendars.splice(calendarIdx, 1, calendar);
     return calendar;
   }
 }

@@ -14,6 +14,15 @@ export default class CalendarRepository implements ICalendarsRepository {
     this.ormRepo = getRepository(Calendar);
   }
 
+  public async findById(calendarId: string): Promise<Calendar | undefined> {
+    return await this.ormRepo.findOne({
+      where: {
+        id: calendarId,
+      },
+      relations: ["users"],
+    });
+  }
+
   public async findByUserId(userId: string): Promise<Calendar[] | undefined> {
     return this.ormRepo
       .createQueryBuilder("calendar")
@@ -24,6 +33,11 @@ export default class CalendarRepository implements ICalendarsRepository {
 
   public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
     const calendar = this.ormRepo.create({ name, users: [user] });
+    await this.ormRepo.save(calendar);
+    return calendar;
+  }
+
+  public async save(calendar: Calendar): Promise<Calendar> {
     await this.ormRepo.save(calendar);
     return calendar;
   }
