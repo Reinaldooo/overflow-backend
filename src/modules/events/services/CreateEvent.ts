@@ -8,6 +8,7 @@ import IEventsRepository from "../repositories/IEventsRepository";
 interface RequestModel {
   userId: string;
   date: Date;
+  calendarId: string;
 }
 
 @injectable()
@@ -19,23 +20,31 @@ export default class CreateEvent {
     private eventsRepository: IEventsRepository
   ) {}
 
-  public async execute({ date, userId }: RequestModel): Promise<Event> {
-    if (!date || !userId) {
+  public async execute({
+    date,
+    userId,
+    calendarId,
+  }: RequestModel): Promise<Event> {
+    if (!date || !userId || !calendarId) {
       // throw errors in here and send them back in the route
       throw new AppError("Missing event info");
     }
 
     const eventHour = startOfHour(date);
 
-    const eventExists = await this.eventsRepository.findByDate(eventHour);
+    const eventExists = await this.eventsRepository.findByDate(
+      eventHour,
+      calendarId
+    );
 
     if (eventExists) {
       // throw errors in here and send them back in the route
-      throw new AppError("This hour is already booked");
+      throw new AppError("This hour is unavailable.");
     }
 
     const event = await this.eventsRepository.create({
       userId,
+      calendarId,
       date: eventHour,
     });
 

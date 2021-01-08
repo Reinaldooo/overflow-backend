@@ -18,7 +18,7 @@ export default class Calendar {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column("varchar")
+  @Column({ type: "varchar", unique: true })
   name: string;
 
   @ManyToMany(() => User, user => user.calendars)

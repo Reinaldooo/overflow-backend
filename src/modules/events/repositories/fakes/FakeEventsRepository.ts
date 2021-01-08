@@ -7,14 +7,20 @@ import Event from "../../infra/typeorm/entities/Event";
 
 export default class FakeEventsRepository implements IEventsRepository {
   private events: Event[] = [];
-  public async findByDate(date: Date): Promise<Event | undefined> {
-    const foundEvent = this.events.find(event => isEqual(event.date, date));
+  public async findByDate(date: Date, calendarId): Promise<Event | undefined> {
+    const foundEvent = this.events.find(
+      event => isEqual(event.date, date) && event.calendarId === calendarId
+    );
     return foundEvent;
   }
 
-  public async create({ userId, date }: ICreateEventDTO): Promise<Event> {
+  public async create({
+    userId,
+    date,
+    calendarId,
+  }: ICreateEventDTO): Promise<Event> {
     const event = new Event();
-    Object.assign(event, { id: uuidv4(), date, userId });
+    Object.assign(event, { id: uuidv4(), date, userId, calendarId });
     this.events.push(event);
     return event;
   }

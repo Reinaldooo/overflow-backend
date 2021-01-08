@@ -15,10 +15,12 @@ describe("Create Event", () => {
     const event = await createEvent.execute({
       date: new Date(),
       userId: "testId",
+      calendarId: "testCalendarId",
     });
 
     expect(event).toHaveProperty("id");
     expect(event.userId).toBe("testId");
+    expect(event.calendarId).toBe("testCalendarId");
   });
   //
   it("Should not be able to create a new event in the same date", async () => {
@@ -27,29 +29,40 @@ describe("Create Event", () => {
     await createEvent.execute({
       date: eventDate,
       userId: "testId",
+      calendarId: "testCalendarId",
     });
 
     await expect(
       createEvent.execute({
         date: eventDate,
         userId: "testId",
+        calendarId: "testCalendarId",
       })
     ).rejects.toBeInstanceOf(AppError);
   });
   //
-  it("Should not be able to create a new event if date or userId are not provided", async () => {
+  it("Should not be able to create a new event if complete info are not provided", async () => {
     const eventDate = new Date();
 
     await expect(
       createEvent.execute({
         date: eventDate,
         userId: undefined,
+        calendarId: "testCalendarId",
       })
     ).rejects.toBeInstanceOf(AppError);
     await expect(
       createEvent.execute({
-        userId: "testId",
         date: undefined,
+        userId: "testId",
+        calendarId: "testCalendarId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      createEvent.execute({
+        date: eventDate,
+        userId: "testId",
+        calendarId: undefined,
       })
     ).rejects.toBeInstanceOf(AppError);
   });

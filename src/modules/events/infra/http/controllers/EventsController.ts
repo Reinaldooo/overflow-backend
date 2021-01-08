@@ -14,8 +14,8 @@ export default class EventsController {
   public async create(req: Request, res: Response): Promise<Response> {
     //---> /events
     // Token required
-    // Body fields: userId, date
-    const { userId, date } = req.body;
+    // Body fields: userId, calendarId, date
+    const { userId, calendarId, date } = req.body;
 
     const parsedDate = parseISO(date);
 
@@ -24,6 +24,7 @@ export default class EventsController {
     const event = await createEvent.execute({
       date: parsedDate,
       userId,
+      calendarId,
     });
 
     return res.json(event);

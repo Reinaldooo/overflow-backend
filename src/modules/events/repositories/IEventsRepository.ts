@@ -6,5 +6,5 @@ import ICreateEventDTO from "../dtos/ICreateEventDTO";
 // if it is SQL or NoSQL and etc, but it should have the methods below
 export default interface IEventsRepository {
   create(data: ICreateEventDTO): Promise<Event>;
-  findByDate(date: Date): Promise<Event | undefined>;
+  findByDate(date: Date, calendarId: string): Promise<Event | undefined>;
 }

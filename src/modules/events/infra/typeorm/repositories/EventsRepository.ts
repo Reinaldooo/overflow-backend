@@ -14,15 +14,22 @@ export default class EventRepository implements IEventsRepository {
     this.ormRepo = getRepository(Event);
   }
 
-  public async findByDate(date: Date): Promise<Event | undefined> {
+  public async findByDate(
+    date: Date,
+    calendarId: string
+  ): Promise<Event | undefined> {
     const event = await this.ormRepo.findOne({
-      where: { date },
+      where: { date, calendarId },
     });
     return event;
   }
 
-  public async create({ userId, date }: ICreateEventDTO): Promise<Event> {
-    const event = this.ormRepo.create({ userId, date });
+  public async create({
+    userId,
+    calendarId,
+    date,
+  }: ICreateEventDTO): Promise<Event> {
+    const event = this.ormRepo.create({ userId, calendarId, date });
     await this.ormRepo.save(event);
     return event;
   }
