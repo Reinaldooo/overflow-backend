@@ -4,8 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
 } from "typeorm";
 //
+import Calendar from "../../../../calendars/infra/typeorm/entities/Calendar";
 
 // This is a decorator, it works like a function and the class is as argument
 // Something like: Entity(class)
@@ -26,6 +29,10 @@ export default class User {
 
   @Column({ nullable: true })
   avatar: string;
+
+  @ManyToMany(() => Calendar, calendar => calendar.users)
+  @JoinTable({ name: "calendars_and_users" })
+  calendars: Calendar[];
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
