@@ -15,7 +15,10 @@ describe("Create Calendar", () => {
   beforeEach(() => {
     fakeCalendarsRepository = new FakeCalendarsRepository();
     fakeUsersRepository = new FakeUsersRepository();
-    createCalendar = new CreateCalendar(fakeCalendarsRepository, fakeUsersRepository);    
+    createCalendar = new CreateCalendar(
+      fakeCalendarsRepository,
+      fakeUsersRepository
+    );
     fakeHashProvider = new FakeHashProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
   });
@@ -27,13 +30,12 @@ describe("Create Calendar", () => {
       passwd: "123456",
     });
 
-    const calendar = await createCalendar.execute({
+    const calendarId = await createCalendar.execute({
       userId: user.id,
       name: "Trabalho",
     });
 
-    expect(calendar).toHaveProperty("id");
-    expect(calendar.users[0].id).toBe(user.id);
+    expect(calendarId).toBeTruthy();
   });
   //
   it("Should not be able to create a new calendar without name or userId", async () => {
@@ -56,6 +58,26 @@ describe("Create Calendar", () => {
       createCalendar.execute({
         userId: "testId",
         name: "test",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("User should not be able to create two calendars with the same name", async () => {
+    const user = await createUser.execute({
+      name: "Reinaldo",
+      email: "rewifetri@gmail.com",
+      passwd: "123456",
+    });
+
+    await createCalendar.execute({
+      userId: user.id,
+      name: "Trabalho",
+    });
+
+    await expect(
+      createCalendar.execute({
+        userId: user.id,
+        name: "Trabalho",
       })
     ).rejects.toBeInstanceOf(AppError);
   });

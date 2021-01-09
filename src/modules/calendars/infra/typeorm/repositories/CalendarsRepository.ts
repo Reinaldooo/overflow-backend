@@ -31,10 +31,10 @@ export default class CalendarRepository implements ICalendarsRepository {
       .getMany();
   }
 
-  public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
+  public async create({ user, name }: ICreateCalendarDTO): Promise<string> {
     const calendar = this.ormRepo.create({ name, users: [user] });
     await this.ormRepo.save(calendar);
-    return calendar;
+    return calendar.id;
   }
 
   public async save(calendar: Calendar): Promise<Calendar> {

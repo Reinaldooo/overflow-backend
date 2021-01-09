@@ -21,7 +21,7 @@ export default class CreateCalendar {
     private usersRepository: IUsersRepository
   ) {}
 
-  public async execute({ name, userId }: RequestModel): Promise<Calendar> {
+  public async execute({ name, userId }: RequestModel): Promise<string> {
     if (!name || !userId) {
       // throw errors in here and send them back in the route
       throw new AppError("Missing calendar info");
@@ -34,11 +34,18 @@ export default class CreateCalendar {
       throw new AppError("Invalid user.");
     }
 
-    const calendar = await this.calendarsRepository.create({
+    const userCalendars = await this.calendarsRepository.findByUserId(userId);
+
+    if (userCalendars.find(c => c.name === name)) {
+      // throw errors in here and send them back in the route
+      throw new AppError(`You already have a calendar with this name.`);
+    }
+
+    const calendarId = await this.calendarsRepository.create({
       user,
       name,
     });
 
-    return calendar;
+    return calendarId;
   }
 }

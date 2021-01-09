@@ -36,7 +36,7 @@ describe("Include User in Calendar", () => {
       passwd: "123456",
     });
 
-    const calendar = await createCalendar.execute({
+    const calendarId = await createCalendar.execute({
       userId: user.id,
       name: "Trabalho",
     });
@@ -49,12 +49,15 @@ describe("Include User in Calendar", () => {
 
     await includeUserInCalendar.execute({
       userId: newUser.id,
-      calendarId: calendar.id,
+      calendarId,
     });
 
-    expect(calendar).toHaveProperty("id");
-    expect(calendar.users[0].id).toBe(user.id);
-    expect(calendar.users[1].id).toBe(newUser.id);
+    const newUserCalendars = await fakeCalendarsRepository.findByUserId(
+      newUser.id
+    );
+
+    expect(calendarId).toBeTruthy();
+    expect(newUserCalendars[0]).toBeTruthy();
   });
   //
   it("Should not be able to include invalid user to calendar", async () => {
@@ -64,7 +67,7 @@ describe("Include User in Calendar", () => {
       passwd: "123456",
     });
 
-    const calendar = await createCalendar.execute({
+    const calendarId = await createCalendar.execute({
       userId: user.id,
       name: "Trabalho",
     });
@@ -72,12 +75,56 @@ describe("Include User in Calendar", () => {
     await expect(
       includeUserInCalendar.execute({
         userId: "invalid",
-        calendarId: calendar.id,
+        calendarId,
       })
     ).rejects.toBeInstanceOf(AppError);
   });
   //
-  it("Should not be able to include user if the calendar already have 5 users", async () => {
+  it("Should not be able to include calendar with missing info", async () => {
+    await expect(
+      includeUserInCalendar.execute({
+        userId: "",
+        calendarId: "",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to include user in invalid calendar", async () => {
+    const user = await createUser.execute({
+      name: "Reinaldo",
+      email: "rewifetri@gmail.com",
+      passwd: "123456",
+    });
+
+    await expect(
+      includeUserInCalendar.execute({
+        userId: user.id,
+        calendarId: "invalidId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to re-include user in the same calendar", async () => {
+    const user = await createUser.execute({
+      name: "Reinaldo",
+      email: "rewifetri@gmail.com",
+      passwd: "123456",
+    });
+
+    const calendarId = await createCalendar.execute({
+      userId: user.id,
+      name: "Trabalho",
+    });
+
+    await expect(
+      includeUserInCalendar.execute({
+        userId: user.id,
+        calendarId,
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to include more than 5 users to calendar", async () => {
     const user = await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",
@@ -114,35 +161,35 @@ describe("Include User in Calendar", () => {
       passwd: "123456",
     });
 
-    const calendar = await createCalendar.execute({
+    const calendarId = await createCalendar.execute({
       userId: user.id,
       name: "Trabalho",
     });
 
     await includeUserInCalendar.execute({
       userId: user1.id,
-      calendarId: calendar.id,
+      calendarId,
     });
 
     await includeUserInCalendar.execute({
       userId: user2.id,
-      calendarId: calendar.id,
+      calendarId,
     });
 
     await includeUserInCalendar.execute({
       userId: user3.id,
-      calendarId: calendar.id,
+      calendarId,
     });
 
     await includeUserInCalendar.execute({
       userId: user4.id,
-      calendarId: calendar.id,
+      calendarId,
     });
 
     await expect(
       includeUserInCalendar.execute({
         userId: user5.id,
-        calendarId: calendar.id,
+        calendarId,
       })
     ).rejects.toBeInstanceOf(AppError);
   });

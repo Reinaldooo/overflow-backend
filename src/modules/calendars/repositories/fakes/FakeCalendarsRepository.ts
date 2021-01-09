@@ -21,11 +21,11 @@ export default class FakeCalendarsRepository implements ICalendarsRepository {
     return foundCalendar;
   }
 
-  public async create({ user, name }: ICreateCalendarDTO): Promise<Calendar> {
+  public async create({ user, name }: ICreateCalendarDTO): Promise<string> {
     const calendar = new Calendar();
     Object.assign(calendar, { id: uuidv4(), name, users: [user] });
     this.calendars.push(calendar);
-    return calendar;
+    return calendar.id;
   }
 
   public async save(calendar: Calendar): Promise<Calendar> {

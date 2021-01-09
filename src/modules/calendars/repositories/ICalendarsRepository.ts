@@ -5,7 +5,7 @@ import ICreateCalendarDTO from "../dtos/ICreateCalendarDTO";
 // needs. It shouldn't matter how it is implemented on the actual repo, nor
 // if it is SQL or NoSQL and etc, but it should have the methods below
 export default interface ICalendarsRepository {
-  create(data: ICreateCalendarDTO): Promise<Calendar>;
+  create(data: ICreateCalendarDTO): Promise<string>;
   save(calendar: Calendar): Promise<Calendar>;
   findById(calendarId: string): Promise<Calendar | undefined>;
   findByUserId(userId: string): Promise<Calendar[] | undefined>;
