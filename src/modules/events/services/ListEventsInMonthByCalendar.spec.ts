@@ -126,4 +126,50 @@ describe("List events in month by calendar id", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  //
+  it("Should not be able to list events with missing parameters", async () => {
+    await expect(
+      listEventsInMonthByCalendar.execute({
+        month: undefined,
+        year: 2021,
+        calendarId: "testId",
+        userId: "testId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      listEventsInMonthByCalendar.execute({
+        month: 1,
+        year: undefined,
+        calendarId: "testId",
+        userId: "testId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      listEventsInMonthByCalendar.execute({
+        month: 1,
+        year: 2021,
+        calendarId: undefined,
+        userId: "testId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+    await expect(
+      listEventsInMonthByCalendar.execute({
+        month: 1,
+        year: 2021,
+        calendarId: "testId",
+        userId: undefined,
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to list events with invalid calendar id", async () => {
+    await expect(
+      listEventsInMonthByCalendar.execute({
+        month: 1,
+        year: 2021,
+        calendarId: "invalidId",
+        userId: "testId",
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });
