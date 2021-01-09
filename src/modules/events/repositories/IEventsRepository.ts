@@ -1,5 +1,6 @@
 import Event from "../infra/typeorm/entities/Event";
 import ICreateEventDTO from "../dtos/ICreateEventDTO";
+import IFindInMonthFromCalendarIdDTO from "../dtos/IFindInMonthFromCalendarIdDTO";
 
 // This interface works as a "guideline" for all the methods the events repo
 // needs. It shouldn't matter how it is implemented on the actual repo, nor
@@ -7,4 +8,7 @@ import ICreateEventDTO from "../dtos/ICreateEventDTO";
 export default interface IEventsRepository {
   create(data: ICreateEventDTO): Promise<Event>;
   findByDate(date: Date, calendarId: string): Promise<Event | undefined>;
+  findInMonthFromCalendarId(
+    data: IFindInMonthFromCalendarIdDTO
+  ): Promise<Event[]>;
 }

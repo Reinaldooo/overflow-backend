@@ -8,8 +8,8 @@ const eventsRouter = Router();
 
 eventsRouter.use(checkAuth);
 
-//---> /events
-eventsRouter.get("/", eventsController.index);
+//---> /events/calendar/:calendarId/:month/:year
+eventsRouter.get("/calendar/:calendarId/:month/:year", eventsController.index);
 
 //---> /events
 eventsRouter.post("/", eventsController.create);

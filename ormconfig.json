@@ -6,7 +6,7 @@
   "password": "post0210",
   "database": "typecal",
   "synchronize": true,
-  "logging": false,
+  "logging": ["query"],
   "entities": ["src/modules/**/infra/typeorm/entities/*.ts"],
   "migrations": ["src/shared/infra/typeorm/migrations/*.ts"],
   "cli": {

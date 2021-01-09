@@ -1,7 +1,8 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Repository, Raw } from "typeorm";
 //
 import IEventsRepository from "@modules/events/repositories/IEventsRepository";
 import ICreateEventDTO from "@modules/events/dtos/ICreateEventDTO";
+import IFindInMonthFromCalendarIdDTO from "@modules/events/dtos/IFindInMonthFromCalendarIdDTO";
 import Event from "../entities/Event";
 
 export default class EventRepository implements IEventsRepository {
@@ -22,6 +23,25 @@ export default class EventRepository implements IEventsRepository {
       where: { date, calendarId },
     });
     return event;
+  }
+
+  public async findInMonthFromCalendarId({
+    month,
+    year,
+    calendarId,
+  }: IFindInMonthFromCalendarIdDTO): Promise<Event[]> {
+    const parsedMonth = String(month).padStart(2, "0");
+
+    const events = await this.ormRepo.find({
+      where: {
+        calendarId,
+        date: Raw(
+          fieldName =>
+            `to_char(${fieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`
+        ),
+      },
+    });
+    return events;
   }
 
   public async create({
