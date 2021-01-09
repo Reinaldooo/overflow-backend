@@ -12,7 +12,7 @@ calendarsRouter.use(checkAuth);
 calendarsRouter.get("/", calendarsController.index);
 
 //---> /calendars/:calendarId
-calendarsRouter.patch("/:calendarId", calendarsController.update);
+calendarsRouter.post("/:calendarId/users", calendarsController.update);
 
 //---> /calendars
 calendarsRouter.post("/", calendarsController.create);
