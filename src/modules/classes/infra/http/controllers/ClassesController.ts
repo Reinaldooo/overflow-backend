@@ -14,7 +14,7 @@ export default class ClassesController {
     // Token required
     // Body fields: date
     const { userId: tutorId } = req;
-    const { date } = req.body;
+    const { date, techs, description } = req.body;
 
     const parsedDate = parseISO(date);
 
@@ -23,6 +23,8 @@ export default class ClassesController {
     const _class = await createClass.execute({
       date: parsedDate,
       tutorId,
+      techs,
+      description,
     });
 
     return res.json(_class);

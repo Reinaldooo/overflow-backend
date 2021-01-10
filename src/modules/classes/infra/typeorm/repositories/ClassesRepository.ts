@@ -24,8 +24,8 @@ export default class ClassesRepository implements IClassesRepository {
     return _class;
   }
 
-  public async create({ tutorId, date }: ICreateClassDTO): Promise<Class> {
-    const _class = this.ormRepo.create({ tutorId, date });
+  public async create(data: ICreateClassDTO): Promise<Class> {
+    const _class = this.ormRepo.create(data);
     await this.ormRepo.save(_class);
     return _class;
   }

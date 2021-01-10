@@ -4,10 +4,13 @@ import { injectable, inject } from "tsyringe";
 import AppError from "@shared/errors/AppError";
 import Class from "../infra/typeorm/entities/Class";
 import IClassesRepository from "../repositories/IClassesRepository";
+import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
 
 interface RequestModel {
   tutorId: string;
   date: Date;
+  techs: string[];
+  description: string;
 }
 
 @injectable()
@@ -16,13 +19,25 @@ export default class CreateClass {
 
   constructor(
     @inject("ClassesRepository")
-    private classesRepository: IClassesRepository
+    private classesRepository: IClassesRepository,
+    @inject("TechsRepository")
+    private techsRepository: ITechsRepository
   ) {}
 
-  public async execute({ date, tutorId }: RequestModel): Promise<Class> {
-    if (!date || !tutorId) {
+  public async execute({
+    date,
+    tutorId,
+    techs,
+    description,
+  }: RequestModel): Promise<Class> {
+    if (!date || !tutorId || !techs[0] || !description) {
       // throw errors in here and send them back in the route
       throw new AppError("Missing class info");
+    }
+
+    if (description.length > 200) {
+      // throw errors in here and send them back in the route
+      throw new AppError("description should have 200 chars max.");
     }
 
     const classHour = startOfHour(date);
@@ -37,9 +52,18 @@ export default class CreateClass {
       throw new AppError("This hour is unavailable.");
     }
 
+    const techsFound = await this.techsRepository.findByNames(techs);
+
+    if (!techsFound[0]) {
+      // throw errors in here and send them back in the route
+      throw new AppError("Invalid techs.");
+    }
+
     const _class = await this.classesRepository.create({
       tutorId,
       date: classHour,
+      techs: techsFound,
+      description,
     });
 
     return _class;
