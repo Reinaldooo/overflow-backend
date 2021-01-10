@@ -4,7 +4,7 @@
   "port": 2451,
   "username": "worker",
   "password": "post0210",
-  "database": "typecal",
+  "database": "overflow",
   "synchronize": true,
   "logging": ["query"],
   "entities": ["src/modules/**/infra/typeorm/entities/*.ts"],

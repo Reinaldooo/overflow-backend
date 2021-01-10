@@ -1,6 +1,6 @@
 This folder structure follow some basic principles of DDD metodology ( Domain driven development ),
 a domain is a like a model, a knoledge area of the app. For example in the beginning
-the two main domains where `users` and `events`, each one having it's own functionalities.
+the two main domains where `users` and `classes`, each one having it's own functionalities.
 
 Commit before DDD structure: 4102c3bcc1d7605646282fe4a76f94abbd3ae9c5
 

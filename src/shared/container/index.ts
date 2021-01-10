@@ -9,18 +9,18 @@ import "./providers";
 // As the services needs to receive the repository in their contructors, using
 // this method i can replace this syntax:
 
-// const eventsRepository = new EventsRepository();
-// const createEvent = new CreateEvent(eventsRepository);
+// const classesRepository = new ClassesRepository();
+// const createClass = new CreateClass(classesRepository);
 
 // With this:
 
-// const createEvent = container.resolve(CreateEvent);
+// const createClass = container.resolve(CreateClass);
 
 // To achieve this i must also use the `injectable` and `inject` decorators on the
 // services definition
 
-import IEventsRepository from "@modules/events/repositories/IEventsRepository";
-import EventsRepository from "@modules/events/infra/typeorm/repositories/EventsRepository";
+import IClassesRepository from "@modules/classes/repositories/IClassesRepository";
+import ClassesRepository from "@modules/classes/infra/typeorm/repositories/ClassesRepository";
 
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 import UsersRepository from "@modules/users/infra/typeorm/repositories/UsersRepository";
@@ -28,12 +28,9 @@ import UsersRepository from "@modules/users/infra/typeorm/repositories/UsersRepo
 import IPassRecoveryTokenRepository from "@modules/users/repositories/IPassRecoveryTokenRepository";
 import PassRecoveryTokenRepository from "@modules/users/infra/typeorm/repositories/PassRecoveryTokenRepository";
 
-import ICalendarsRepository from "@modules/calendars/repositories/ICalendarsRepository";
-import CalendarsRepository from "@modules/calendars/infra/typeorm/repositories/CalendarsRepository";
-
-container.registerSingleton<IEventsRepository>(
-  "EventsRepository",
-  EventsRepository
+container.registerSingleton<IClassesRepository>(
+  "ClassesRepository",
+  ClassesRepository
 );
 
 container.registerSingleton<IUsersRepository>(
@@ -44,9 +41,4 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<IPassRecoveryTokenRepository>(
   "PassRecoveryTokenRepository",
   PassRecoveryTokenRepository
-);
-
-container.registerSingleton<ICalendarsRepository>(
-  "CalendarsRepository",
-  CalendarsRepository
 );

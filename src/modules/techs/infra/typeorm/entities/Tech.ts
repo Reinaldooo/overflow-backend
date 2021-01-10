@@ -6,40 +6,27 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
-  OneToMany,
 } from "typeorm";
 //
 import Class from "../../../../classes/infra/typeorm/entities/Class";
 
 // This is a decorator, it works like a function and the class is as argument
 // Something like: Entity(class)
-@Entity("users")
-export default class User {
+@Entity("techs")
+export default class Tech {
   // Constructor is not needed since typeorm will do this behind the scenes
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column({ type: "bool", default: false })
-  admin: boolean;
+  @ManyToMany(() => Class, _class => _class.techs)
+  @JoinTable({ name: "classes_and_techs" })
+  classes: Class[];
 
-  @Column()
+  @Column("varchar")
   name: string;
 
-  @Column()
-  email: string;
-
-  @Column()
-  passwd: string;
-
-  @Column({ nullable: true })
-  avatar: string;
-
-  @OneToMany(() => Class, _class => _class.tutor)
-  teaching: Class[];
-
-  @ManyToMany(() => Class, _class => _class.students)
-  @JoinTable({ name: "classes_and_students" })
-  studying: Class[];
+  @Column({ type: "varchar", nullable: true })
+  image: string;
 
   @CreateDateColumn({ type: "timestamptz" })
   createdAt: Date;
