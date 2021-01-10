@@ -19,6 +19,9 @@ import "./providers";
 // To achieve this i must also use the `injectable` and `inject` decorators on the
 // services definition
 
+import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
+import TechsRepository from "@modules/techs/infra/typeorm/repositories/TechsRepository";
+
 import IClassesRepository from "@modules/classes/repositories/IClassesRepository";
 import ClassesRepository from "@modules/classes/infra/typeorm/repositories/ClassesRepository";
 
@@ -36,6 +39,11 @@ container.registerSingleton<IClassesRepository>(
 container.registerSingleton<IUsersRepository>(
   "UsersRepository",
   UsersRepository
+);
+
+container.registerSingleton<ITechsRepository>(
+  "TechsRepository",
+  TechsRepository
 );
 
 container.registerSingleton<IPassRecoveryTokenRepository>(
