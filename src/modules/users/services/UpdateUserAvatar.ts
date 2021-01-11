@@ -1,5 +1,3 @@
-import path from "path";
-import { promises } from "fs";
 import { injectable, inject } from "tsyringe";
 //
 import User from "../infra/typeorm/entities/User";

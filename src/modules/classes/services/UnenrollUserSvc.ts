@@ -2,7 +2,6 @@ import { injectable, inject } from "tsyringe";
 //
 import AppError from "@shared/errors/AppError";
 import IClassesRepository from "../repositories/IClassesRepository";
-import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 
 interface RequestModel {
   classId: string;

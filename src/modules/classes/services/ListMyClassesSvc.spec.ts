@@ -1,4 +1,3 @@
-import AppError from "@shared/errors/AppError";
 import FakeClassesRepository from "../repositories/fakes/FakeClassesRepository";
 import CreateClass from "./CreateClass";
 import ListMyClassesSvc from "./ListMyClassesSvc";
