@@ -30,7 +30,7 @@ export default class Class {
   @JoinColumn({ name: "tutorId" })
   tutor: User;
 
-  @ManyToMany(() => User, user => user.studying)
+  @ManyToMany(() => User, user => user.studying, { eager: true })
   students: User[];
 
   @ManyToMany(() => Tech, tech => tech.classes, {

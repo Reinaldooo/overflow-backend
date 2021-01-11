@@ -11,6 +11,8 @@ export interface IFindAllByUserIdModel {
 // if it is SQL or NoSQL and etc, but it should have the methods below
 export default interface IClassesRepository {
   create(data: ICreateClassDTO): Promise<Class>;
+  save(_class: Class): Promise<Class>;
+  findById(id: string): Promise<Class | undefined>;
   findByDate(date: Date, tutorId: string): Promise<Class | undefined>;
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
   findTutorClasses(tutorId: string): Promise<Class[] | undefined>;

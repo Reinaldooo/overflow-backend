@@ -16,6 +16,13 @@ export default class ClassesRepository implements IClassesRepository {
     this.ormRepo = getRepository(Class);
   }
 
+  public async findById(id: string): Promise<Class | undefined> {
+    const _class = await this.ormRepo.findOne({
+      where: { id },
+    });
+    return _class;
+  }
+
   public async findByDate(
     date: Date,
     tutorId: string
@@ -52,5 +59,9 @@ export default class ClassesRepository implements IClassesRepository {
     const _class = this.ormRepo.create(data);
     await this.ormRepo.save(_class);
     return _class;
+  }
+
+  public async save(_class: Class): Promise<Class> {
+    return this.ormRepo.save(_class);
   }
 }

@@ -10,7 +10,15 @@ import Class from "../../infra/typeorm/entities/Class";
 export default class FakeClassesRepository implements IClassesRepository {
   private classes: Class[] = [];
 
-  public async findByDate(date: Date, tutorId): Promise<Class | undefined> {
+  public async findById(id: string): Promise<Class | undefined> {
+    const foundClass = this.classes.find(_class => _class.id === id);
+    return foundClass;
+  }
+
+  public async findByDate(
+    date: Date,
+    tutorId: string
+  ): Promise<Class | undefined> {
     const foundClass = this.classes.find(
       _class => isEqual(_class.date, date) && _class.tutorId === tutorId
     );
@@ -31,8 +39,14 @@ export default class FakeClassesRepository implements IClassesRepository {
 
   public async create(data: ICreateClassDTO): Promise<Class> {
     const _class = new Class();
-    Object.assign(_class, { id: uuidv4(), ...data });
+    Object.assign(_class, { id: uuidv4(), ...data, students: [] });
     this.classes.push(_class);
+    return _class;
+  }
+
+  public async save(_class: Class): Promise<Class> {
+    const classIdx = this.classes.findIndex(cls => (cls.id = _class.id));
+    classIdx ? (this.classes[classIdx] = _class) : this.classes.push(_class);
     return _class;
   }
 }
