@@ -24,5 +24,7 @@ classesRouter.get("/tutor", listTutorClassesController.index);
 classesRouter.post("/", classesController.create);
 //---> /classes/students
 classesRouter.post("/students", enrollmentsController.create);
+//---> /classes/students
+classesRouter.delete("/students", enrollmentsController.delete);
 
 export default classesRouter;
