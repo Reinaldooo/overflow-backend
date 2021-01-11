@@ -18,6 +18,15 @@ export default class UsersRepository implements IUsersRepository {
     return await this.ormRepo.findOne(id);
   }
 
+  public async findByIdWithClasses(id: string): Promise<User | undefined> {
+    return await this.ormRepo.findOne({
+      where: {
+        id,
+      },
+      relations: ["teaching", "studying"],
+    });
+  }
+
   public async findByEmail(email: string): Promise<User | undefined> {
     return await this.ormRepo.findOne({ where: { email } });
   }

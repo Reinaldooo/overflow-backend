@@ -1,6 +1,8 @@
 import { getRepository, Repository, Raw } from "typeorm";
 //
-import IClassesRepository from "@modules/classes/repositories/IClassesRepository";
+import IClassesRepository, {
+  IFindAllByUserIdModel,
+} from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
 import Class from "../entities/Class";
 
@@ -22,6 +24,21 @@ export default class ClassesRepository implements IClassesRepository {
       where: { date, tutorId },
     });
     return _class;
+  }
+
+  public async findAllByUserId(
+    userId: string
+  ): Promise<IFindAllByUserIdModel | undefined> {
+    const teaching = await this.ormRepo.find({
+      where: { tutorId: userId },
+    });
+    const studying = await this.ormRepo
+      .createQueryBuilder("class")
+      .innerJoin("class.students", "student", "student.id = :id", {
+        id: userId,
+      })
+      .getMany();
+    return { teaching, studying };
   }
 
   public async create(data: ICreateClassDTO): Promise<Class> {
