@@ -16,4 +16,5 @@ export default interface IClassesRepository {
   findByDate(date: Date, tutorId: string): Promise<Class | undefined>;
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
   findTutorClasses(tutorId: string): Promise<Class[] | undefined>;
+  findByTechName(techName: string): Promise<Class[] | undefined>;
 }

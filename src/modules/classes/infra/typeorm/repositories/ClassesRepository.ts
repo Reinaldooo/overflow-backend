@@ -55,6 +55,23 @@ export default class ClassesRepository implements IClassesRepository {
     return classes;
   }
 
+  public async findByTechName(techName: string): Promise<Class[] | undefined> {
+    let classes = await this.ormRepo
+      .createQueryBuilder("class")
+      .innerJoinAndSelect(
+        "class.techs",
+        "techSearch",
+        "techSearch.name = :techName",
+        {
+          techName,
+        }
+      )
+      .innerJoinAndSelect("class.techs", "tech")
+      .getMany();
+
+    return classes;
+  }
+
   public async create(data: ICreateClassDTO): Promise<Class> {
     const _class = this.ormRepo.create(data);
     await this.ormRepo.save(_class);
