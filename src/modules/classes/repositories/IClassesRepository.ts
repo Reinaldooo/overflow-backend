@@ -13,4 +13,5 @@ export default interface IClassesRepository {
   create(data: ICreateClassDTO): Promise<Class>;
   findByDate(date: Date, tutorId: string): Promise<Class | undefined>;
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
+  findTutorClasses(tutorId: string): Promise<Class[] | undefined>;
 }

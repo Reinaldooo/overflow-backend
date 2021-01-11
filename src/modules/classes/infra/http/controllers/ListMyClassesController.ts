@@ -2,16 +2,16 @@ import { Request, Response } from "express";
 import { parseISO } from "date-fns";
 import { container } from "tsyringe";
 //
-import ListUserClassesSvc from "@modules/classes/services/ListUserClassesSvc";
+import ListMyClassesSvc from "@modules/classes/services/ListMyClassesSvc";
 
-export default class ListUserClassesController {
+export default class ListMyClassesController {
   public async index(req: Request, res: Response): Promise<Response> {
     //---> /classes/me
     // Token required
     const { userId } = req;
-    const listUserClassesSvc = container.resolve(ListUserClassesSvc);
+    const listMyClassesSvc = container.resolve(ListMyClassesSvc);
 
-    const user = await listUserClassesSvc.execute(userId);
+    const user = await listMyClassesSvc.execute(userId);
     return res.send(user);
   }
 }

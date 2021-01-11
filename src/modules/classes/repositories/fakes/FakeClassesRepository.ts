@@ -25,6 +25,10 @@ export default class FakeClassesRepository implements IClassesRepository {
     return { teaching, studying };
   }
 
+  public async findTutorClasses(tutorId: string): Promise<Class[] | undefined> {
+    return this.classes.filter(_class => _class.tutorId === tutorId);
+  }
+
   public async create(data: ICreateClassDTO): Promise<Class> {
     const _class = new Class();
     Object.assign(_class, { id: uuidv4(), ...data });

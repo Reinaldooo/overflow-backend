@@ -33,7 +33,9 @@ export default class Class {
   @ManyToMany(() => User, user => user.studying)
   students: User[];
 
-  @ManyToMany(() => Tech, tech => tech.classes)
+  @ManyToMany(() => Tech, tech => tech.classes, {
+    eager: true,
+  })
   techs: Tech[];
 
   @Column("timestamp with time zone")

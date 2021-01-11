@@ -5,7 +5,7 @@ import IClassesRepository, {
 } from "@modules/classes/repositories/IClassesRepository";
 
 @injectable()
-export default class ListUserClassesSvc {
+export default class ListMyClassesSvc {
   constructor(
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository

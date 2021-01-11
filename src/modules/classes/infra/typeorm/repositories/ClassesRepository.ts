@@ -41,6 +41,13 @@ export default class ClassesRepository implements IClassesRepository {
     return { teaching, studying };
   }
 
+  public async findTutorClasses(tutorId: string): Promise<Class[] | undefined> {
+    const classes = await this.ormRepo.find({
+      where: { tutorId },
+    });
+    return classes;
+  }
+
   public async create(data: ICreateClassDTO): Promise<Class> {
     const _class = this.ormRepo.create(data);
     await this.ormRepo.save(_class);
