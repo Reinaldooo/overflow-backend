@@ -56,17 +56,19 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async findByTechName(techName: string): Promise<Class[] | undefined> {
-    let classes = await this.ormRepo
+    const classes = await this.ormRepo
       .createQueryBuilder("class")
-      .innerJoinAndSelect(
-        "class.techs",
-        "techSearch",
-        "techSearch.name = :techName",
-        {
-          techName,
-        }
-      )
-      .innerJoinAndSelect("class.techs", "tech")
+      .leftJoin("class.techs", "techSearch")
+      .where("techSearch.name = :techName", { techName })
+      // The first left join on techs will get only the tech that is being searched,
+      // so i make a second join to get other techs on the class
+      .leftJoin("class.techs", "tech")
+      .leftJoin("class.students", "student")
+      .select("class")
+      .addSelect("tech.name")
+      .addSelect("tech.image")
+      .addSelect("student.name")
+      .addSelect("student.avatar")
       .getMany();
 
     return classes;
