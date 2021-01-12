@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 //
 import CreateTech from "@modules/techs/services/CreateTech";
 
-export default class TechsController {
+export default class TechsCTRL {
   public async create(req: Request, res: Response): Promise<Response> {
     //> /techs
     // token required
