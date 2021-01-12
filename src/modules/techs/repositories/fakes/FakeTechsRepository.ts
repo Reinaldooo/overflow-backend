@@ -33,8 +33,8 @@ export default class FakeTechsRepository implements ITechsRepository {
   }
 
   public async save(tech: Tech): Promise<Tech> {
-    const techIdx = this.techs.findIndex(tch => (tch.id = tech.id));
-    techIdx ? (this.techs[techIdx] = tech) : this.techs.push(tech);
+    const techIdx = this.techs.findIndex(tch => tch.id === tech.id);
+    techIdx > -1 ? this.techs.splice(techIdx, 1, tech) : this.techs.push(tech);
     return tech;
   }
 }

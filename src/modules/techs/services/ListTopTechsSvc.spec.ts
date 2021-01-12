@@ -8,6 +8,7 @@ import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHa
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
+import Tech from "@modules/techs/infra/typeorm/entities/Tech";
 import Class from "@modules/classes/infra/typeorm/entities/Class";
 
 let fakeClassesRepository: FakeClassesRepository;
@@ -22,6 +23,8 @@ let fakeHashProvider: FakeHashProvider;
 let user0: User;
 let class0: Class;
 let class1: Class;
+let nodejs: Tech;
+let reactjs: Tech;
 
 describe("List Techs with more classes", () => {
   beforeEach(async () => {
@@ -43,19 +46,19 @@ describe("List Techs with more classes", () => {
 
     user0.admin = true;
 
-    const nodejs = await createTech.execute({
+    await createTech.execute({
       name: "nodejs",
       image: "testImage",
       userId: user0.id,
     });
 
-    const reactjs = await createTech.execute({
+    await createTech.execute({
       name: "reactjs",
       image: "testImage",
       userId: user0.id,
     });
 
-    const graphql = await createTech.execute({
+    await createTech.execute({
       name: "graphql",
       image: "testImage",
       userId: user0.id,
@@ -75,9 +78,16 @@ describe("List Techs with more classes", () => {
       techs: ["nodejs"],
     });
 
-    nodejs.classes.push(class0);
-    nodejs.classes.push(class1);
-    reactjs.classes.push(class1);
+    [nodejs, reactjs] = await fakeTechsRepository.findByNames([
+      "nodejs",
+      "reactjs",
+    ]);
+
+    nodejs = { ...nodejs, classes: [class0, class1] };
+    reactjs = { ...reactjs, classes: [class0] };
+
+    await fakeTechsRepository.save(nodejs);
+    await fakeTechsRepository.save(reactjs);
   });
   //
   it("Should be able to list top classes", async () => {
@@ -95,7 +105,6 @@ describe("List Techs with more classes", () => {
         amount: "0",
       },
     ];
-
     await expect(listTopTechsSvc.execute()).resolves.toEqual(topTechsMock);
   });
 });

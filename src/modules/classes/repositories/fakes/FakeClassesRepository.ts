@@ -51,8 +51,10 @@ export default class FakeClassesRepository implements IClassesRepository {
   }
 
   public async save(_class: Class): Promise<Class> {
-    const classIdx = this.classes.findIndex(cls => (cls.id = _class.id));
-    classIdx ? (this.classes[classIdx] = _class) : this.classes.push(_class);
+    const classIdx = this.classes.findIndex(cls => cls.id === _class.id);
+    classIdx > -1
+      ? this.classes.splice(classIdx, 1, _class)
+      : this.classes.push(_class);
     return _class;
   }
 }
