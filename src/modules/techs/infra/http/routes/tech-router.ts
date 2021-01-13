@@ -9,5 +9,7 @@ techRouter.use(checkAuth);
 
 //---> /techs
 techRouter.post("/", techsController.create);
+//---> /techs/search
+techRouter.post("/search", techsController.index);
 
 export default techRouter;

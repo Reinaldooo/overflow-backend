@@ -1,4 +1,4 @@
-import { getRepository, In, Repository } from "typeorm";
+import { getRepository, In, Like, Repository } from "typeorm";
 //
 import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
 import ICreateTechDTO from "@modules/techs/dtos/ICreateTechDTO";
@@ -16,6 +16,12 @@ export default class TechsRepository implements ITechsRepository {
 
   public async findByNames(names: string[]): Promise<Tech[] | undefined> {
     return await this.ormRepo.find({ where: { name: In(names) } });
+  }
+
+  public async findTechsByName(searchName: string): Promise<Tech[]> {
+    return await this.ormRepo.find({
+      where: { name: Like(`%${searchName}%`) },
+    });
   }
 
   public async create(data: ICreateTechDTO): Promise<Tech> {

@@ -11,6 +11,11 @@ export default class FakeTechsRepository implements ITechsRepository {
     return found;
   }
 
+  public async findTechsByName(searchName: string): Promise<Tech[]> {
+    const found = this.techs.filter(tech => tech.name.includes(searchName));
+    return found;
+  }
+
   public async create(data: ICreateTechDTO): Promise<Tech> {
     const tech = new Tech();
     Object.assign(tech, { id: uuidv4(), ...data, classes: [] });
