@@ -30,7 +30,9 @@ export default class FakeClassesRepository implements IClassesRepository {
     userId: string
   ): Promise<IFindAllByUserIdModel | undefined> {
     const teaching = this.classes.filter(_class => _class.tutorId === userId);
-    const studying = [];
+    const studying = this.classes.filter(_class =>
+      _class.students.find(s => s.id === userId)
+    );
     return { teaching, studying };
   }
 

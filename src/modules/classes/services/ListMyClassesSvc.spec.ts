@@ -1,6 +1,7 @@
 import FakeClassesRepository from "../repositories/fakes/FakeClassesRepository";
 import CreateClass from "./CreateClass";
 import ListMyClassesSvc from "./ListMyClassesSvc";
+import EnrollUser from "./EnrollUser";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
@@ -10,6 +11,7 @@ import CreateUser from "@modules/users/services/CreateUser";
 let fakeClassesRepository: FakeClassesRepository;
 let createClass: CreateClass;
 let listMyClassesSvc: ListMyClassesSvc;
+let enrollUser: EnrollUser;
 let fakeTechsRepository: FakeTechsRepository;
 let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
@@ -26,6 +28,7 @@ describe("List user classes", () => {
     fakeClassesRepository = new FakeClassesRepository();
     createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
     listMyClassesSvc = new ListMyClassesSvc(fakeClassesRepository);
+    enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
   });
   //
   it("Should be able to list all user classes", async () => {
@@ -37,6 +40,12 @@ describe("List user classes", () => {
 
     user.admin = true;
 
+    const user2 = await createUser.execute({
+      name: "Reinaldo2",
+      email: "rewifetri2@gmail.com",
+      passwd: "123456",
+    });
+
     await createTech.execute({
       name: "nodejs",
       image: "testImage",
@@ -44,22 +53,36 @@ describe("List user classes", () => {
     });
 
     await createClass.execute({
-      date: new Date(2021, 0, 15, 15),
+      date: new Date(2025, 0, 15, 15),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],
     });
 
     await createClass.execute({
-      date: new Date(2021, 0, 15, 16),
+      date: new Date(2025, 0, 15, 16),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],
     });
 
+    const classEnrolled = await createClass.execute({
+      date: new Date(2025, 0, 15, 16),
+      tutorId: user2.id,
+      description: "Enrolled Test description",
+      techs: ["nodejs"],
+    });
+
+    await enrollUser.execute({
+      classId: classEnrolled.id,
+      tutorId: user2.id,
+      userId: user.id,
+    });
+
     const classes = await listMyClassesSvc.execute(user.id);
 
     expect(classes.teaching).toHaveLength(2);
-    expect(classes.studying).toHaveLength(0);
+    expect(classes.studying).toHaveLength(1);
+    expect(classes.studying[0].description).toBe("Enrolled Test description");
   });
 });
