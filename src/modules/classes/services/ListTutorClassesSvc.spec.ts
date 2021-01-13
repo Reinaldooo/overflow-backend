@@ -25,7 +25,11 @@ describe("List tutor classes", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
+    createClass = new CreateClass(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeTechsRepository
+    );
     listTutorClassesSvc = new ListTutorClassesSvc(fakeClassesRepository);
   });
   //

@@ -31,7 +31,11 @@ describe("List Techs with more classes", () => {
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
     listTopTechsSvc = new ListTopTechsSvc(fakeClassesRepository);
-    createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
+    createClass = new CreateClass(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeTechsRepository
+    );
 
     user0 = await createUser.execute({
       name: "Reinaldo",

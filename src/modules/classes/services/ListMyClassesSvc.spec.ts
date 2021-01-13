@@ -26,7 +26,11 @@ describe("List user classes", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
+    createClass = new CreateClass(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeTechsRepository
+    );
     listMyClassesSvc = new ListMyClassesSvc(fakeClassesRepository);
     enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
   });

@@ -21,7 +21,7 @@ export default class FakeClassesRepository implements IClassesRepository {
     tutorId: string
   ): Promise<Class | undefined> {
     const foundClass = this.classes.find(
-      _class => isEqual(_class.date, date) && _class.tutorId === tutorId
+      _class => isEqual(_class.date, date) && _class.tutor.id === tutorId
     );
     return foundClass;
   }
@@ -29,7 +29,7 @@ export default class FakeClassesRepository implements IClassesRepository {
   public async findAllByUserId(
     userId: string
   ): Promise<IFindAllByUserIdModel | undefined> {
-    const teaching = this.classes.filter(_class => _class.tutorId === userId);
+    const teaching = this.classes.filter(_class => _class.tutor.id === userId);
     const studying = this.classes.filter(_class =>
       _class.students.find(s => s.id === userId)
     );
@@ -37,7 +37,7 @@ export default class FakeClassesRepository implements IClassesRepository {
   }
 
   public async findTutorClasses(tutorId: string): Promise<Class[] | undefined> {
-    return this.classes.filter(_class => _class.tutorId === tutorId);
+    return this.classes.filter(_class => _class.tutor.id === tutorId);
   }
 
   public async findByTechName(techName: string): Promise<Class[] | undefined> {

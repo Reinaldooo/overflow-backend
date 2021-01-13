@@ -31,7 +31,11 @@ describe("Enroll user in class", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
+    createClass = new CreateClass(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeTechsRepository
+    );
     enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
 
     user0 = await createUser.execute({

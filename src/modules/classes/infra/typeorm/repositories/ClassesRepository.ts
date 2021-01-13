@@ -41,12 +41,15 @@ export default class ClassesRepository implements IClassesRepository {
     const teaching = await this.ormRepo.find({
       where: { tutorId: userId },
     });
+
     const studying = await this.ormRepo
       .createQueryBuilder("class")
       .innerJoin("class.students", "student", "student.id = :id", {
         id: userId,
       })
+      .innerJoinAndSelect("class.techs", "techs")
       .getMany();
+
     return { teaching, studying };
   }
 

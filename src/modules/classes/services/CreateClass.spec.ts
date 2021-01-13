@@ -23,7 +23,11 @@ describe("Create Class", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
+    createClass = new CreateClass(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeTechsRepository
+    );
   });
   //
   it("Should be able to create a new class", async () => {
@@ -49,11 +53,11 @@ describe("Create Class", () => {
     });
 
     expect(_class).toHaveProperty("id");
-    expect(_class.tutorId).toBe(user.id);
+    expect(_class.tutor.id).toBe(user.id);
     expect(_class.techs).toHaveLength(1);
   });
   //
-  it("Should be able to create a new class in the same hour", async () => {
+  it("Should not be able to create a new class in the same hour", async () => {
     const user = await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",
@@ -85,7 +89,7 @@ describe("Create Class", () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   //
-  it("Should be able to create a new class with invalid techs", async () => {
+  it("Should not be able to create a new class with invalid techs", async () => {
     const user = await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",
@@ -102,7 +106,7 @@ describe("Create Class", () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   //
-  it("Should be able to create a new class with description length bigger than 200 chars", async () => {
+  it("Should not be able to create a new class with description length bigger than 200 chars", async () => {
     const user = await createUser.execute({
       name: "Reinaldo",
       email: "rewifetri@gmail.com",
@@ -156,6 +160,17 @@ describe("Create Class", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
     //
+    await expect(
+      createClass.execute({
+        date: new Date(),
+        tutorId: "userId",
+        description: "Test description",
+        techs: [],
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
+  it("Should not be able to create a new class with invalid tutor id.", async () => {
     await expect(
       createClass.execute({
         date: new Date(),
