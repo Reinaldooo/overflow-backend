@@ -21,6 +21,11 @@ export default class FakeUsersRepository implements IUsersRepository {
     return found;
   }
 
+  public async findUsersByName(searchName: string): Promise<User[]> {
+    const found = this.users.filter(user => user.name.includes(searchName));
+    return found;
+  }
+
   public async create(data: ICreateUserDTO): Promise<User> {
     const user = new User();
     Object.assign(user, { id: uuidv4() }, data);

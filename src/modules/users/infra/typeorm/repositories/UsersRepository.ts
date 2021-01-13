@@ -1,4 +1,4 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Like, Repository } from "typeorm";
 //
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 import ICreateUserDTO from "@modules/users/dtos/ICreateUserDTO";
@@ -29,6 +29,12 @@ export default class UsersRepository implements IUsersRepository {
 
   public async findByEmail(email: string): Promise<User | undefined> {
     return await this.ormRepo.findOne({ where: { email } });
+  }
+
+  public async findUsersByName(searchName: string): Promise<User[]> {
+    return await this.ormRepo.find({
+      where: { name: Like(`%${searchName}%`) },
+    });
   }
 
   public async create(data: ICreateUserDTO): Promise<User> {

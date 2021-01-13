@@ -13,6 +13,8 @@ const upload = multer(multerConfig);
 
 //---> /users
 userRouter.post("/", usersController.create);
+//---> /users/search
+userRouter.post("/search", usersController.index);
 //---> /users/avatar
 userRouter.post(
   "/avatar",
