@@ -31,7 +31,7 @@ export default class UsersRepository implements IUsersRepository {
     return await this.ormRepo.findOne({ where: { email } });
   }
 
-  public async findUsersByName(searchName: string): Promise<User[]> {
+  public async findByName(searchName: string): Promise<User[]> {
     return await this.ormRepo.find({
       where: { name: Like(`%${searchName}%`) },
     });

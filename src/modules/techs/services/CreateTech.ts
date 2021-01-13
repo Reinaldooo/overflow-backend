@@ -26,7 +26,7 @@ export default class CreateTech {
       throw new AppError("Missing tech info.");
     }
 
-    const [techExists] = await this.techsRepository.findByNames([name]);
+    const [techExists] = await this.techsRepository.findByExactNames([name]);
 
     if (techExists) {
       // throw errors in here and send them back in the route

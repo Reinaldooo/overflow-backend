@@ -21,7 +21,7 @@ export default class SearchTechs {
       throw new AppError("Please include at least 3 chars.");
     }
 
-    const foundTechs = this.techsRepository.findTechsByName(searchName);
+    const foundTechs = this.techsRepository.findByName(searchName);
 
     return foundTechs;
   }

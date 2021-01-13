@@ -62,7 +62,7 @@ export default class CreateClass {
       throw new AppError("Invalid tutor.");
     }
 
-    const techsFound = await this.techsRepository.findByNames(techs);
+    const techsFound = await this.techsRepository.findByExactNames(techs);
 
     if (!techsFound[0]) {
       // throw errors in here and send them back in the route

@@ -14,11 +14,11 @@ export default class TechsRepository implements ITechsRepository {
     this.ormRepo = getRepository(Tech);
   }
 
-  public async findByNames(names: string[]): Promise<Tech[] | undefined> {
+  public async findByExactNames(names: string[]): Promise<Tech[] | undefined> {
     return await this.ormRepo.find({ where: { name: In(names) } });
   }
 
-  public async findTechsByName(searchName: string): Promise<Tech[]> {
+  public async findByName(searchName: string): Promise<Tech[]> {
     return await this.ormRepo.find({
       where: { name: Like(`%${searchName}%`) },
     });

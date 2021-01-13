@@ -21,7 +21,7 @@ export default class SearchUsers {
       throw new AppError("Please include at least 3 chars.");
     }
 
-    const foundUsers = this.usersRepository.findUsersByName(searchName);
+    const foundUsers = this.usersRepository.findByName(searchName);
 
     return foundUsers;
   }

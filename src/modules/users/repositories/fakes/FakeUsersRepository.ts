@@ -21,7 +21,7 @@ export default class FakeUsersRepository implements IUsersRepository {
     return found;
   }
 
-  public async findUsersByName(searchName: string): Promise<User[]> {
+  public async findByName(searchName: string): Promise<User[]> {
     const found = this.users.filter(user => user.name.includes(searchName));
     return found;
   }

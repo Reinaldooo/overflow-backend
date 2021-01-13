@@ -6,12 +6,12 @@ import Tech from "../../infra/typeorm/entities/Tech";
 
 export default class FakeTechsRepository implements ITechsRepository {
   private techs: Tech[] = [];
-  public async findByNames(names: string[]): Promise<Tech[] | undefined> {
+  public async findByExactNames(names: string[]): Promise<Tech[] | undefined> {
     const found = this.techs.filter(tech => names.includes(tech.name));
     return found;
   }
 
-  public async findTechsByName(searchName: string): Promise<Tech[]> {
+  public async findByName(searchName: string): Promise<Tech[]> {
     const found = this.techs.filter(tech => tech.name.includes(searchName));
     return found;
   }
