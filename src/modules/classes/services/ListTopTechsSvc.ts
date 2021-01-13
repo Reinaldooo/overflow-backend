@@ -1,7 +1,7 @@
 import { injectable, inject } from "tsyringe";
 //
 import IClassesRepository, {
-  ITopTechsModel,
+  ITopRankModel,
 } from "../repositories/IClassesRepository";
 
 @injectable()
@@ -13,7 +13,7 @@ export default class ListTopTechsSvc {
     private classesRepository: IClassesRepository
   ) {}
 
-  public async execute(): Promise<ITopTechsModel[]> {
+  public async execute(): Promise<ITopRankModel[]> {
     const topTechs = await this.classesRepository.listTopTechs();
 
     return topTechs;
