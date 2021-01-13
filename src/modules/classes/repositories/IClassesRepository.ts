@@ -5,6 +5,10 @@ export interface IFindAllByUserIdModel {
   teaching: Class[];
   studying: Class[];
 }
+export interface ITopTechsModel {
+  name: string;
+  amount: string;
+}
 
 // This interface works as a "guideline" for all the methods the classes repo
 // needs. It shouldn't matter how it is implemented on the actual repo, nor
@@ -17,4 +21,5 @@ export default interface IClassesRepository {
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
   findTutorClasses(tutorId: string): Promise<Class[] | undefined>;
   findByTechName(techName: string): Promise<Class[] | undefined>;
+  listTopTechs(): Promise<ITopTechsModel[]>;
 }

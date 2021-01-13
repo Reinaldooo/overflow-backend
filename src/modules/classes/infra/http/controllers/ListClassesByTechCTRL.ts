@@ -5,7 +5,7 @@ import ListClassesByTechSvc from "@modules/classes/services/ListClassesByTechSvc
 
 export default class ListClassesByTechCTRL {
   public async index(req: Request, res: Response): Promise<Response> {
-    //---> /classes/tutor
+    //---> /classes/techs/:techName
     // Token required
     // Body fields: tutorId
     const { techName } = req.params;

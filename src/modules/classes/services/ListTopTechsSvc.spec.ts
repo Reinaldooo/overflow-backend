@@ -1,19 +1,16 @@
 import FakeClassesRepository from "@modules/classes/repositories/fakes/FakeClassesRepository";
 import CreateClass from "@modules/classes/services/CreateClass";
-import EnrollUser from "@modules/classes/services/EnrollUser";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
-import ListTopTechsSvc from "@modules/techs/services/ListTopTechsSvc";
+import ListTopTechsSvc from "@modules/classes/services/ListTopTechsSvc";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
-import Tech from "@modules/techs/infra/typeorm/entities/Tech";
 import Class from "@modules/classes/infra/typeorm/entities/Class";
 
 let fakeClassesRepository: FakeClassesRepository;
 let createClass: CreateClass;
-let enrollUser: EnrollUser;
 let fakeTechsRepository: FakeTechsRepository;
 let createTech: CreateTech;
 let listTopTechsSvc: ListTopTechsSvc;
@@ -23,8 +20,7 @@ let fakeHashProvider: FakeHashProvider;
 let user0: User;
 let class0: Class;
 let class1: Class;
-let nodejs: Tech;
-let reactjs: Tech;
+let class2: Class;
 
 describe("List Techs with more classes", () => {
   beforeEach(async () => {
@@ -33,10 +29,9 @@ describe("List Techs with more classes", () => {
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
-    listTopTechsSvc = new ListTopTechsSvc(fakeTechsRepository);
     fakeClassesRepository = new FakeClassesRepository();
+    listTopTechsSvc = new ListTopTechsSvc(fakeClassesRepository);
     createClass = new CreateClass(fakeClassesRepository, fakeTechsRepository);
-    enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
 
     user0 = await createUser.execute({
       name: "Reinaldo",
@@ -65,44 +60,40 @@ describe("List Techs with more classes", () => {
     });
 
     class0 = await createClass.execute({
-      date: new Date(2021, 0, 15, 15),
+      date: new Date(2025, 0, 15, 15),
       tutorId: user0.id,
       description: "Test description",
-      techs: ["nodejs"],
+      techs: ["nodejs", "reactjs"],
     });
 
     class1 = await createClass.execute({
-      date: new Date(2021, 0, 15, 16),
+      date: new Date(2025, 0, 15, 16),
       tutorId: user0.id,
       description: "Test description",
-      techs: ["nodejs"],
+      techs: ["nodejs", "reactjs"],
     });
 
-    [nodejs, reactjs] = await fakeTechsRepository.findByNames([
-      "nodejs",
-      "reactjs",
-    ]);
-
-    nodejs = { ...nodejs, classes: [class0, class1] };
-    reactjs = { ...reactjs, classes: [class0] };
-
-    await fakeTechsRepository.save(nodejs);
-    await fakeTechsRepository.save(reactjs);
+    class2 = await createClass.execute({
+      date: new Date(2025, 0, 15, 17),
+      tutorId: user0.id,
+      description: "Test description",
+      techs: ["nodejs", "graphql"],
+    });
   });
   //
   it("Should be able to list top classes", async () => {
     const topTechsMock = [
       {
         name: "nodejs",
-        amount: "2",
+        amount: "3",
       },
       {
         name: "reactjs",
-        amount: "1",
+        amount: "2",
       },
       {
         name: "graphql",
-        amount: "0",
+        amount: "1",
       },
     ];
     await expect(listTopTechsSvc.execute()).resolves.toEqual(topTechsMock);

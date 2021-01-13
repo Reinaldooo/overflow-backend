@@ -3,6 +3,7 @@ import { isEqual } from "date-fns";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
+  ITopTechsModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
 import Class from "../../infra/typeorm/entities/Class";
@@ -41,6 +42,23 @@ export default class FakeClassesRepository implements IClassesRepository {
     return this.classes.filter(_class =>
       _class.techs.find(t => t.name === techName)
     );
+  }
+
+  public async listTopTechs(): Promise<ITopTechsModel[]> {
+    let result = [];
+    let techsCount = {};
+    for (let _class of this.classes) {
+      _class.techs.forEach(el => {
+        techsCount[el.name] = techsCount[el.name] + 1 || 1;
+      });
+    }
+    for (let tech in techsCount) {
+      result.push({
+        name: tech,
+        amount: String(techsCount[tech]),
+      });
+    }
+    return result;
   }
 
   public async create(data: ICreateClassDTO): Promise<Class> {

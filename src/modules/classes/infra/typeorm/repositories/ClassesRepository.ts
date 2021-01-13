@@ -1,7 +1,9 @@
-import { getRepository, Repository, Raw } from "typeorm";
+import { getRepository, Repository } from "typeorm";
+import { isBefore } from "date-fns";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
+  ITopTechsModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
 import Class from "../entities/Class";
@@ -72,6 +74,20 @@ export default class ClassesRepository implements IClassesRepository {
       .getMany();
 
     return classes;
+  }
+
+  public async listTopTechs(): Promise<ITopTechsModel[]> {
+    let techsRank = await this.ormRepo
+      .createQueryBuilder("class")
+      .leftJoin("class.techs", "techs")
+      .select("techs.name", "name")
+      .addSelect("COUNT(*)", "amount")
+      .groupBy("name")
+      .orderBy("amount", "DESC")
+      .limit(10)
+      .getRawMany();
+
+    return techsRank;
   }
 
   public async create(data: ICreateClassDTO): Promise<Class> {

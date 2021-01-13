@@ -5,6 +5,7 @@ import ClassesController from "../controllers/ClassesController";
 import ListMyClassesController from "../controllers/ListMyClassesController";
 import ListTutorClassesController from "../controllers/ListTutorClassesController";
 import ListClassesByTechCTRL from "../controllers/ListClassesByTechCTRL";
+import ListTopTechsCTRL from "../controllers/ListTopTechsCTRL";
 import EnrollmentsController from "../controllers/EnrollmentsController";
 
 const classesController = new ClassesController();
@@ -12,6 +13,7 @@ const listMyClassesController = new ListMyClassesController();
 const listTutorClassesController = new ListTutorClassesController();
 const enrollmentsController = new EnrollmentsController();
 const listClassesByTechCTRL = new ListClassesByTechCTRL();
+const listTopTechsCTRL = new ListTopTechsCTRL();
 const classesRouter = Router();
 
 classesRouter.use(checkAuth);
@@ -22,8 +24,10 @@ classesRouter.get("/", classesController.index);
 classesRouter.get("/me", listMyClassesController.index);
 //---> /classes/tutor
 classesRouter.get("/tutor", listTutorClassesController.index);
-//---> /classes/:techName
-classesRouter.get("/:techName", listClassesByTechCTRL.index);
+//---> /classes/techs/top
+classesRouter.get("/techs/top", listTopTechsCTRL.index);
+//---> /classes/techs/:techName
+classesRouter.get("/tech/:techName", listClassesByTechCTRL.index);
 //---> /classes
 classesRouter.post("/", classesController.create);
 //---> /classes/students

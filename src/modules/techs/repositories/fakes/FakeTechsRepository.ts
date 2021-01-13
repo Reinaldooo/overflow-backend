@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 //
-import ITechsRepository, {
-  ITopTechsModel,
-} from "@modules/techs/repositories/ITechsRepository";
+import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
 import ICreateTechDTO from "@modules/techs/dtos/ICreateTechDTO";
 import Tech from "../../infra/typeorm/entities/Tech";
 
@@ -11,18 +9,6 @@ export default class FakeTechsRepository implements ITechsRepository {
   public async findByNames(names: string[]): Promise<Tech[] | undefined> {
     const found = this.techs.filter(tech => names.includes(tech.name));
     return found;
-  }
-
-  public async listTopTechs(): Promise<ITopTechsModel[]> {
-    let classesCount = [];
-    for (let tech of this.techs) {
-      let tmp = {
-        name: tech.name,
-        amount: String(tech.classes.length),
-      };
-      classesCount.push(tmp);
-    }
-    return classesCount;
   }
 
   public async create(data: ICreateTechDTO): Promise<Tech> {
