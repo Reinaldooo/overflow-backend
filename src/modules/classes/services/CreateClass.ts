@@ -5,6 +5,7 @@ import AppError from "@shared/errors/AppError";
 import Class from "../infra/typeorm/entities/Class";
 import IClassesRepository from "../repositories/IClassesRepository";
 import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
+import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 
 interface RequestModel {
   tutorId: string;
@@ -20,6 +21,8 @@ export default class CreateClass {
   constructor(
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository,
+    @inject("UsersRepository")
+    private usersRepository: IUsersRepository,
     @inject("TechsRepository")
     private techsRepository: ITechsRepository
   ) {}
@@ -52,6 +55,13 @@ export default class CreateClass {
       throw new AppError("This hour is unavailable.");
     }
 
+    const tutor = await this.usersRepository.findById(tutorId);
+
+    if (!tutor) {
+      // throw errors in here and send them back in the route
+      throw new AppError("Invalid tutor.");
+    }
+
     const techsFound = await this.techsRepository.findByNames(techs);
 
     if (!techsFound[0]) {
@@ -60,7 +70,7 @@ export default class CreateClass {
     }
 
     const _class = await this.classesRepository.create({
-      tutorId,
+      tutor,
       date: classHour,
       techs: techsFound,
       description,

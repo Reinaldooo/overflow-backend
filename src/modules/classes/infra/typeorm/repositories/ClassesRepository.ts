@@ -3,7 +3,7 @@ import { isBefore } from "date-fns";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
-  ITopTechsModel,
+  ITopRankModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
 import Class from "../entities/Class";
@@ -76,13 +76,28 @@ export default class ClassesRepository implements IClassesRepository {
     return classes;
   }
 
-  public async listTopTechs(): Promise<ITopTechsModel[]> {
+  public async listTopTechs(): Promise<ITopRankModel[]> {
     let techsRank = await this.ormRepo
       .createQueryBuilder("class")
       .leftJoin("class.techs", "techs")
       .select("techs.name", "name")
       .addSelect("COUNT(*)", "amount")
       .groupBy("name")
+      .orderBy("amount", "DESC")
+      .limit(10)
+      .getRawMany();
+
+    return techsRank;
+  }
+
+  public async listTopTutors(): Promise<ITopRankModel[]> {
+    let techsRank = await this.ormRepo
+      .createQueryBuilder("class")
+      .leftJoin("class.tutor", "tutor")
+      .select("tutor.id", "tutorid")
+      .addSelect("tutor.name", "name")
+      .addSelect("COUNT(tutor.id)", "amount")
+      .groupBy("tutorid")
       .orderBy("amount", "DESC")
       .limit(10)
       .getRawMany();

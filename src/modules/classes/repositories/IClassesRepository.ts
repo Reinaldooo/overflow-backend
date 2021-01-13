@@ -5,9 +5,8 @@ export interface IFindAllByUserIdModel {
   teaching: Class[];
   studying: Class[];
 }
-export interface ITopTechsModel {
-  name: string;
-  amount: string;
+export interface ITopRankModel {
+  [key: string]: string;
 }
 
 // This interface works as a "guideline" for all the methods the classes repo
@@ -21,5 +20,6 @@ export default interface IClassesRepository {
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
   findTutorClasses(tutorId: string): Promise<Class[] | undefined>;
   findByTechName(techName: string): Promise<Class[] | undefined>;
-  listTopTechs(): Promise<ITopTechsModel[]>;
+  listTopTechs(): Promise<ITopRankModel[]>;
+  listTopTutors(): Promise<ITopRankModel[]>;
 }

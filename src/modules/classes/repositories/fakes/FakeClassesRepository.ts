@@ -3,7 +3,7 @@ import { isEqual } from "date-fns";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
-  ITopTechsModel,
+  ITopRankModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
 import Class from "../../infra/typeorm/entities/Class";
@@ -46,7 +46,7 @@ export default class FakeClassesRepository implements IClassesRepository {
     );
   }
 
-  public async listTopTechs(): Promise<ITopTechsModel[]> {
+  public async listTopTechs(): Promise<ITopRankModel[]> {
     let result = [];
     let techsCount = {};
     for (let _class of this.classes) {
@@ -61,6 +61,24 @@ export default class FakeClassesRepository implements IClassesRepository {
       });
     }
     return result;
+  }
+
+  public async listTopTutors(): Promise<ITopRankModel[]> {
+    let tutorsCount = [];
+    for (let _class of this.classes) {
+      let tutorIdx = tutorsCount.findIndex(t => t.tutorid === _class.tutor.id);
+      if (tutorIdx > -1) {
+        tutorsCount[tutorIdx].amount++;
+        continue;
+      }
+      let tmp = {
+        name: _class.tutor.name,
+        amount: 1,
+        tutorid: _class.tutor.id,
+      };
+      tutorsCount.push(tmp);
+    }
+    return tutorsCount;
   }
 
   public async create(data: ICreateClassDTO): Promise<Class> {
