@@ -12,6 +12,8 @@ interface RequestModel {
 
 @injectable()
 export default class ForgotPasswdEmail {
+  // DESCRIPTION
+  // Sends email containing the link to recover password
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,

@@ -6,6 +6,8 @@ import IClassesRepository, {
 
 @injectable()
 export default class ListTopTechsSvc {
+  // DESCRIPTION
+  // Returns techs rank by active classes
   constructor(
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository

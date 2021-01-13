@@ -6,6 +6,8 @@ import AppError from "@shared/errors/AppError";
 
 @injectable()
 export default class ListTutorClassesSvc {
+  // DESCRIPTION
+  // Returns classes by a given tutor
   constructor(
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository

@@ -6,6 +6,8 @@ import IClassesRepository, {
 
 @injectable()
 export default class ListMyClassesSvc {
+  // DESCRIPTION
+  // Returns teaching and studying classes for the logged user
   constructor(
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository
