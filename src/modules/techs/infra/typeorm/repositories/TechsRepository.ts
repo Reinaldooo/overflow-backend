@@ -31,6 +31,6 @@ export default class TechsRepository implements ITechsRepository {
   }
 
   public async save(tech: Tech): Promise<Tech> {
-    return this.ormRepo.save(tech);
+    return await this.ormRepo.save(tech);
   }
 }
