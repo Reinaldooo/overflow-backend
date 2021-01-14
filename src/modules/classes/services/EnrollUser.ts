@@ -3,6 +3,7 @@ import { injectable, inject } from "tsyringe";
 import AppError from "@shared/errors/AppError";
 import IClassesRepository from "../repositories/IClassesRepository";
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
+import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
 
 interface RequestModel {
   classId: string;
@@ -18,7 +19,9 @@ export default class EnrollUser {
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository,
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("NotificationsRepository")
+    private notificationsRepository: INotificationsRepository
   ) {}
 
   public async execute({
@@ -59,6 +62,11 @@ export default class EnrollUser {
 
     _class.students = [..._class.students, user];
     await this.classesRepository.save(_class);
+
+    await this.notificationsRepository.create({
+      content: `A new student enrolled in one of your classes`,
+      recipient_id: tutorId,
+    });
 
     return true;
   }

@@ -6,6 +6,7 @@ import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepo
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
+import FakeNotificationsRepository from "@modules/notifications/repositories/fakes/FakeNotificationsRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 
 let fakeClassesRepository: FakeClassesRepository;
@@ -15,12 +16,14 @@ let enrollUser: EnrollUser;
 let fakeTechsRepository: FakeTechsRepository;
 let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
 
 describe("List user classes", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeHashProvider = new FakeHashProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
@@ -32,7 +35,11 @@ describe("List user classes", () => {
       fakeTechsRepository
     );
     listMyClassesSvc = new ListMyClassesSvc(fakeClassesRepository);
-    enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
+    enrollUser = new EnrollUser(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeNotificationsRepository
+    );
   });
   //
   it("Should be able to list all user classes", async () => {

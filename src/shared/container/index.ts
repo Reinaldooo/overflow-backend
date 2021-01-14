@@ -31,6 +31,9 @@ import UsersRepository from "@modules/users/infra/typeorm/repositories/UsersRepo
 import IPassRecoveryTokenRepository from "@modules/users/repositories/IPassRecoveryTokenRepository";
 import PassRecoveryTokenRepository from "@modules/users/infra/typeorm/repositories/PassRecoveryTokenRepository";
 
+import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
+import NotificationsRepository from "@modules/notifications/infra/typeorm/repositories/NotificationsRepository";
+
 container.registerSingleton<IClassesRepository>(
   "ClassesRepository",
   ClassesRepository
@@ -49,4 +52,9 @@ container.registerSingleton<ITechsRepository>(
 container.registerSingleton<IPassRecoveryTokenRepository>(
   "PassRecoveryTokenRepository",
   PassRecoveryTokenRepository
+);
+
+container.registerSingleton<INotificationsRepository>(
+  "NotificationsRepository",
+  NotificationsRepository
 );

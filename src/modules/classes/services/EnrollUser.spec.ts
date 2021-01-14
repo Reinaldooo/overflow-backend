@@ -5,6 +5,7 @@ import EnrollUser from "./EnrollUser";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeNotificationsRepository from "@modules/notifications/repositories/fakes/FakeNotificationsRepository";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
@@ -16,6 +17,7 @@ let enrollUser: EnrollUser;
 let fakeTechsRepository: FakeTechsRepository;
 let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
 let user0: User;
@@ -26,6 +28,7 @@ let class1: Class;
 describe("Enroll user in class", () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
+    fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeHashProvider = new FakeHashProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
@@ -36,7 +39,11 @@ describe("Enroll user in class", () => {
       fakeUsersRepository,
       fakeTechsRepository
     );
-    enrollUser = new EnrollUser(fakeClassesRepository, fakeUsersRepository);
+    enrollUser = new EnrollUser(
+      fakeClassesRepository,
+      fakeUsersRepository,
+      fakeNotificationsRepository
+    );
 
     user0 = await createUser.execute({
       name: "Reinaldo",
