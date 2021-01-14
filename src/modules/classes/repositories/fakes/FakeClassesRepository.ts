@@ -84,7 +84,12 @@ export default class FakeClassesRepository implements IClassesRepository {
 
   public async create(data: ICreateClassDTO): Promise<Class> {
     const _class = new Class();
-    Object.assign(_class, { id: uuidv4(), ...data, students: [] });
+    Object.assign(_class, {
+      id: uuidv4(),
+      ...data,
+      students: [],
+      tutorId: data.tutor.id,
+    });
     this.classes.push(_class);
     return _class;
   }
@@ -102,5 +107,10 @@ export default class FakeClassesRepository implements IClassesRepository {
     Object.assign(_class, { ...data });
     this.save(_class);
     return _class;
+  }
+
+  public async delete(id: string): Promise<boolean> {
+    this.classes = this.classes.filter(cls => cls.id !== id);
+    return true;
   }
 }

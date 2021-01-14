@@ -36,6 +36,8 @@ classesRouter.get("/tech/:techName", listClassesByTechCTRL.index);
 classesRouter.post("/", classesController.create);
 //---> /classes/:classId
 classesRouter.put("/:classId", classesController.update);
+//---> /classes/:classId
+classesRouter.delete("/:classId", classesController.delete);
 //---> /classes/students
 classesRouter.post("/students", enrollmentsController.create);
 //---> /classes/students

@@ -1,4 +1,4 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, Repository, DeleteResult } from "typeorm";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
@@ -126,5 +126,10 @@ export default class ClassesRepository implements IClassesRepository {
     Object.assign(updatedClass, { date, description, techs });
     await this.save(updatedClass);
     return updatedClass;
+  }
+
+  public async delete(id: string): Promise<boolean> {
+    await this.ormRepo.delete(id);
+    return true;
   }
 }

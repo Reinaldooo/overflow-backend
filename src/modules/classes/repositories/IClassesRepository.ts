@@ -17,6 +17,7 @@ export default interface IClassesRepository {
   create(data: ICreateClassDTO): Promise<Class>;
   save(_class: Class): Promise<Class>;
   update(data: IUpdateClassDTO): Promise<Class>;
+  delete(id: string): Promise<boolean>;
   findById(id: string): Promise<Class | undefined>;
   findByDate(date: Date, tutorId: string): Promise<Class | undefined>;
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;
