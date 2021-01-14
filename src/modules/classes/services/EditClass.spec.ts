@@ -228,4 +228,29 @@ describe("Edit Class", () => {
       })
     ).rejects.toBeInstanceOf(AppError);
   });
+  //
+  it("Should not be able to edit other tutor class", async () => {
+    const user1 = await createUser.execute({
+      name: "Other",
+      email: "other@gmail.com",
+      passwd: "123456",
+    });
+
+    const class1 = await createClass.execute({
+      date: new Date(2025, 0, 14, 14),
+      tutorId: user1.id,
+      description: "Test description",
+      techs: ["nodejs"],
+    });
+
+    await expect(
+      editClass.execute({
+        date: new Date(2025, 0, 14, 15),
+        tutorId: user.id,
+        description: "description",
+        techs: ["nodejs"],
+        classId: class1.id,
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
 });

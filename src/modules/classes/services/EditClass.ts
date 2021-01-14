@@ -57,6 +57,18 @@ export default class EditClass {
       throw new AppError("Invalid class.");
     }
 
+    const tutor = await this.usersRepository.findById(tutorId);
+
+    if (!tutor) {
+      // throw errors in here and send them back in the route
+      throw new AppError("Invalid tutor.");
+    }
+
+    if (!(_class.tutorId === tutorId)) {
+      // throw errors in here and send them back in the route
+      throw new AppError("You are not the tutor of this class.");
+    }
+
     const classHour = startOfHour(date);
 
     const hourChanged = !isEqual(_class.date, classHour);
@@ -76,13 +88,6 @@ export default class EditClass {
         // throw errors in here and send them back in the route
         throw new AppError("This hour is unavailable.");
       }
-    }
-
-    const tutor = await this.usersRepository.findById(tutorId);
-
-    if (!tutor) {
-      // throw errors in here and send them back in the route
-      throw new AppError("Invalid tutor.");
     }
 
     const techsFound = await this.techsRepository.findByExactNames(techs);
