@@ -34,6 +34,8 @@ classesRouter.get("/techs/top", listTopTechsCTRL.index);
 classesRouter.get("/tech/:techName", listClassesByTechCTRL.index);
 //---> /classes
 classesRouter.post("/", classesController.create);
+//---> /classes/:classId
+classesRouter.put("/:classId", classesController.update);
 //---> /classes/students
 classesRouter.post("/students", enrollmentsController.create);
 //---> /classes/students

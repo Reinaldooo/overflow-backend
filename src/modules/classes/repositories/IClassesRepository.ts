@@ -1,5 +1,6 @@
 import Class from "../infra/typeorm/entities/Class";
 import ICreateClassDTO from "../dtos/ICreateClassDTO";
+import IUpdateClassDTO from "../dtos/IUpdateClassDTO";
 
 export interface IFindAllByUserIdModel {
   teaching: Class[];
@@ -15,6 +16,7 @@ export interface ITopRankModel {
 export default interface IClassesRepository {
   create(data: ICreateClassDTO): Promise<Class>;
   save(_class: Class): Promise<Class>;
+  update(data: IUpdateClassDTO): Promise<Class>;
   findById(id: string): Promise<Class | undefined>;
   findByDate(date: Date, tutorId: string): Promise<Class | undefined>;
   findAllByUserId(userId: string): Promise<IFindAllByUserIdModel | undefined>;

@@ -1,11 +1,11 @@
 import { getRepository, Repository } from "typeorm";
-import { isBefore } from "date-fns";
 //
 import IClassesRepository, {
   IFindAllByUserIdModel,
   ITopRankModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
+import IUpdateClassDTO from "@modules/classes/dtos/IUpdateClassDTO";
 import Class from "../entities/Class";
 
 export default class ClassesRepository implements IClassesRepository {
@@ -19,9 +19,7 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async findById(id: string): Promise<Class | undefined> {
-    const _class = await this.ormRepo.findOne({
-      where: { id },
-    });
+    const _class = await this.ormRepo.findOne(id);
     return _class;
   }
 
@@ -115,6 +113,18 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async save(_class: Class): Promise<Class> {
-    return this.ormRepo.save(_class);
+    return await this.ormRepo.save(_class);
+  }
+
+  public async update({
+    id,
+    date,
+    description,
+    techs,
+  }: IUpdateClassDTO): Promise<Class> {
+    const updatedClass = await this.ormRepo.findOne(id);
+    Object.assign(updatedClass, { date, description, techs });
+    await this.save(updatedClass);
+    return updatedClass;
   }
 }

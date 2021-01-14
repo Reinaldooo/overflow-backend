@@ -6,6 +6,7 @@ import IClassesRepository, {
   ITopRankModel,
 } from "@modules/classes/repositories/IClassesRepository";
 import ICreateClassDTO from "@modules/classes/dtos/ICreateClassDTO";
+import IUpdateClassDTO from "@modules/classes/dtos/IUpdateClassDTO";
 import Class from "../../infra/typeorm/entities/Class";
 
 export default class FakeClassesRepository implements IClassesRepository {
@@ -93,6 +94,13 @@ export default class FakeClassesRepository implements IClassesRepository {
     classIdx > -1
       ? this.classes.splice(classIdx, 1, _class)
       : this.classes.push(_class);
+    return _class;
+  }
+
+  public async update(data: IUpdateClassDTO): Promise<Class> {
+    const _class = this.classes.find(c => c.id === data.id);
+    Object.assign(_class, { ...data });
+    this.save(_class);
     return _class;
   }
 }
