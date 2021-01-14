@@ -181,6 +181,18 @@ describe("Create Class", () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   //
+  it("Should not be able to create a new class in the past.", async () => {
+    const timeNow = new Date();
+    await expect(
+      createClass.execute({
+        date: new Date(timeNow.getTime() - 5000),
+        tutorId: "userId",
+        description: "Test description",
+        techs: ["nodejs"],
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
   it("Should not be able to create a new class with invalid tutor id.", async () => {
     await expect(
       createClass.execute({

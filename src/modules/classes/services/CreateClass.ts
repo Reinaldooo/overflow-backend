@@ -1,4 +1,4 @@
-import { startOfHour } from "date-fns";
+import { isBefore, startOfHour } from "date-fns";
 import { injectable, inject } from "tsyringe";
 //
 import AppError from "@shared/errors/AppError";
@@ -49,6 +49,11 @@ export default class CreateClass {
     }
 
     const classHour = startOfHour(date);
+
+    if (isBefore(date, new Date())) {
+      // throw errors in here and send them back in the route
+      throw new AppError("You can not create classes in the past.");
+    }
 
     const classExists = await this.classesRepository.findByDate(
       classHour,
