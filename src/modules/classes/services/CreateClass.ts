@@ -38,9 +38,14 @@ export default class CreateClass {
       throw new AppError("Missing class info");
     }
 
+    if (techs.length > 4) {
+      // throw errors in here and send them back in the route
+      throw new AppError("You can add 4 techs max.");
+    }
+
     if (description.length > 200) {
       // throw errors in here and send them back in the route
-      throw new AppError("description should have 200 chars max.");
+      throw new AppError("Description should have 200 chars max.");
     }
 
     const classHour = startOfHour(date);

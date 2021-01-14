@@ -170,6 +170,17 @@ describe("Create Class", () => {
     ).rejects.toBeInstanceOf(AppError);
   });
   //
+  it("Should not be able to create a new class with more than 4 techs.", async () => {
+    await expect(
+      createClass.execute({
+        date: new Date(),
+        tutorId: "userId",
+        description: "Test description",
+        techs: ["nodejs", "reactjs", "graphql", "typescript", "javascript"],
+      })
+    ).rejects.toBeInstanceOf(AppError);
+  });
+  //
   it("Should not be able to create a new class with invalid tutor id.", async () => {
     await expect(
       createClass.execute({
