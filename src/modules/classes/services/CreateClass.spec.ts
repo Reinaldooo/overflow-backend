@@ -46,7 +46,7 @@ describe("Create Class", () => {
     });
 
     const _class = await createClass.execute({
-      date: new Date(),
+      date: new Date(2025, 0, 14, 14),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],
@@ -73,7 +73,7 @@ describe("Create Class", () => {
     });
 
     await createClass.execute({
-      date: new Date(),
+      date: new Date(2025, 0, 14, 14),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],
@@ -81,7 +81,7 @@ describe("Create Class", () => {
 
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: user.id,
         description: "description",
         techs: ["nodejs"],
@@ -98,7 +98,7 @@ describe("Create Class", () => {
 
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: user.id,
         description: "description",
         techs: ["invalidTech"],
@@ -123,7 +123,7 @@ describe("Create Class", () => {
 
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: user.id,
         description:
           "Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description Test description.",
@@ -144,7 +144,7 @@ describe("Create Class", () => {
     //
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: "",
         description: "Test description",
         techs: ["nodejs"],
@@ -153,7 +153,7 @@ describe("Create Class", () => {
     //
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: "userId",
         description: "",
         techs: ["nodejs"],
@@ -162,7 +162,7 @@ describe("Create Class", () => {
     //
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: "userId",
         description: "Test description",
         techs: [],
@@ -173,7 +173,7 @@ describe("Create Class", () => {
   it("Should not be able to create a new class with more than 4 techs.", async () => {
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: "userId",
         description: "Test description",
         techs: ["nodejs", "reactjs", "graphql", "typescript", "javascript"],
@@ -185,7 +185,7 @@ describe("Create Class", () => {
     const timeNow = new Date();
     await expect(
       createClass.execute({
-        date: new Date(timeNow.getTime() - 5000),
+        date: new Date(2020, 0, 14, 14),
         tutorId: "userId",
         description: "Test description",
         techs: ["nodejs"],
@@ -196,10 +196,10 @@ describe("Create Class", () => {
   it("Should not be able to create a new class with invalid tutor id.", async () => {
     await expect(
       createClass.execute({
-        date: new Date(),
+        date: new Date(2025, 0, 14, 14),
         tutorId: "userId",
         description: "Test description",
-        techs: [],
+        techs: ["nodejs"],
       })
     ).rejects.toBeInstanceOf(AppError);
   });
