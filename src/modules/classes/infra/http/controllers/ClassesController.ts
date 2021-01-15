@@ -12,9 +12,8 @@ export default class ClassesController {
   }
   //
   public async create(req: Request, res: Response): Promise<Response> {
-    //---> /classes
+    //---> /classes/:classId
     // Token required
-    // Body fields: date
     const { userId: tutorId } = req;
     const { date, techs, description } = req.body;
 

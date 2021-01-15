@@ -22,6 +22,8 @@ classesRouter.use(checkAuth);
 
 //---> /classes
 classesRouter.get("/", classesController.index);
+//---> /classes
+classesRouter.post("/", classesController.create);
 //---> /classes/me
 classesRouter.get("/me", listMyClassesController.index);
 //---> /classes/tutor
@@ -32,15 +34,13 @@ classesRouter.get("/tutors/top", listTopTutorsCTRL.index);
 classesRouter.get("/techs/top", listTopTechsCTRL.index);
 //---> /classes/techs/:techName
 classesRouter.get("/tech/:techName", listClassesByTechCTRL.index);
-//---> /classes
-classesRouter.post("/", classesController.create);
 //---> /classes/:classId
 classesRouter.put("/:classId", classesController.update);
 //---> /classes/:classId
 classesRouter.delete("/:classId", classesController.delete);
-//---> /classes/students
-classesRouter.post("/students", enrollmentsController.create);
-//---> /classes/students
-classesRouter.delete("/students", enrollmentsController.delete);
+//---> /classes/:classId/students
+classesRouter.post("/:classId/students", enrollmentsController.create);
+//---> /classes/:classId/students
+classesRouter.delete("/:classId/students", enrollmentsController.delete);
 
 export default classesRouter;
