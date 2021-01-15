@@ -1,5 +1,6 @@
 import { container } from "tsyringe";
 import { Request, Response } from "express";
+import { celebrate, Joi, errors, Segments } from "celebrate";
 //
 import CreateTech from "@modules/techs/services/CreateTech";
 import SearchTechs from "@modules/techs/services/SearchTechs";

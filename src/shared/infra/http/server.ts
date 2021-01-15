@@ -2,6 +2,7 @@ import "reflect-metadata";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import "express-async-errors";
+import { errors } from "celebrate";
 //
 import routes from "./routes";
 import { uploadsDirConfig } from "@config/upload";
@@ -16,6 +17,9 @@ server.use(express.json());
 server.use(cors());
 server.use("/files", express.static(uploadsDirConfig.destination));
 server.use(routes);
+
+// Treat 'celebrate' pkg errors
+server.use(errors());
 
 server.use((e: Error, req: Request, res: Response, next: NextFunction) => {
   // Catch all unhandled errors
