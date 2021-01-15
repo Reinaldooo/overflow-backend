@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { celebrate, Joi } from "celebrate";
 import multer from "multer";
 //
 import { multerConfig } from "@config/upload";
@@ -12,9 +13,27 @@ const userRouter = Router();
 const upload = multer(multerConfig);
 
 //---> /users
-userRouter.post("/", usersController.create);
+userRouter.post(
+  "/",
+  celebrate({
+    body: Joi.object().keys({
+      name: Joi.string().min(3).required(),
+      email: Joi.string().email().required(),
+      passwd: Joi.string().min(3).required(),
+    }),
+  }),
+  usersController.create
+);
 //---> /users/search
-userRouter.post("/search", usersController.index);
+userRouter.post(
+  "/search",
+  celebrate({
+    body: Joi.object().keys({
+      searchName: Joi.string().min(3).required(),
+    }),
+  }),
+  usersController.index
+);
 //---> /users/avatar
 userRouter.post(
   "/avatar",
