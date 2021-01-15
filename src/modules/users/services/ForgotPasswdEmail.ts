@@ -46,12 +46,13 @@ export default class ForgotPasswdEmail {
         name: user.name,
         email: user.email,
       },
-      subject: "Typecal - Recuperação de senha",
+      subject: "Overflow - Recuperação de senha",
       templateData: {
         file: forgotPasswdTemplate,
         variables: {
           name: user.name,
           link: `${process.env.FRONTEND_WEB_URL}/passwd/forgot?tk=${token}`,
+          token,
         },
       },
     });

@@ -36,8 +36,8 @@ export default class EtherealMailProvider implements IMailProvider {
   }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
       from: {
-        name: from?.name || "Equipe Typecal",
-        address: from?.email || "equipe@typecal.com",
+        name: from?.name || "Equipe Overflow",
+        address: from?.email || "equipe@overflow.com",
       },
       to: {
         name: to.name,
