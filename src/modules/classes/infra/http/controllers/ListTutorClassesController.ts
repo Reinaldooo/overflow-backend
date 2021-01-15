@@ -5,10 +5,9 @@ import ListTutorClassesSvc from "@modules/classes/services/ListTutorClassesSvc";
 
 export default class ListTutorClassesController {
   public async index(req: Request, res: Response): Promise<Response> {
-    //---> /classes/tutor
+    //---> /classes/tutor/:tutorId
     // Token required
-    // Body fields: tutorId
-    const { tutorId } = req.body;
+    const { tutorId } = req.params;
     const listTutorClassesSvc = container.resolve(ListTutorClassesSvc);
 
     const classes = await listTutorClassesSvc.execute(tutorId);

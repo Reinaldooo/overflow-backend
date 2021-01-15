@@ -17,12 +17,10 @@ export default class ClassesController {
     const { userId: tutorId } = req;
     const { date, techs, description } = req.body;
 
-    const parsedDate = parseISO(date);
-
     const createClass = container.resolve(CreateClass);
 
     const _class = await createClass.execute({
-      date: parsedDate,
+      date,
       tutorId,
       techs,
       description,
@@ -38,12 +36,10 @@ export default class ClassesController {
     const { date, techs, description } = req.body;
     const { classId } = req.params;
 
-    const parsedDate = parseISO(date);
-
     const editClass = container.resolve(EditClass);
 
     const updatedClass = await editClass.execute({
-      date: parsedDate,
+      date,
       tutorId,
       techs,
       description,

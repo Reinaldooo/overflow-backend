@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { celebrate, Joi } from "celebrate";
 //
 import checkAuth from "@modules/users/infra/http/middleware/checkAuth";
 import ClassesController from "../controllers/ClassesController";
@@ -23,24 +24,90 @@ classesRouter.use(checkAuth);
 //---> /classes
 classesRouter.get("/", classesController.index);
 //---> /classes
-classesRouter.post("/", classesController.create);
+classesRouter.post(
+  "/",
+  celebrate({
+    body: Joi.object().keys({
+      date: Joi.date().required(),
+      techs: Joi.array().items(Joi.string().min(3).required()),
+      description: Joi.string().min(3).required(),
+    }),
+  }),
+  classesController.create
+);
 //---> /classes/me
 classesRouter.get("/me", listMyClassesController.index);
-//---> /classes/tutor
-classesRouter.get("/tutor", listTutorClassesController.index);
+//---> /classes/tutor/:tutorId
+classesRouter.get(
+  "/tutor/:tutorId",
+  celebrate({
+    params: {
+      tutorId: Joi.string().uuid().required(),
+    },
+  }),
+  listTutorClassesController.index
+);
 //---> /classes/tutors/top
 classesRouter.get("/tutors/top", listTopTutorsCTRL.index);
 //---> /classes/techs/top
 classesRouter.get("/techs/top", listTopTechsCTRL.index);
 //---> /classes/techs/:techName
-classesRouter.get("/tech/:techName", listClassesByTechCTRL.index);
+classesRouter.get(
+  "/tech/:techName",
+  celebrate({
+    params: {
+      techName: Joi.string().min(3).required(),
+    },
+  }),
+  listClassesByTechCTRL.index
+);
 //---> /classes/:classId
-classesRouter.put("/:classId", classesController.update);
+classesRouter.put(
+  "/:classId",
+  celebrate({
+    params: {
+      classId: Joi.string().uuid().required(),
+    },
+    body: Joi.object().keys({
+      date: Joi.date().required(),
+      techs: Joi.array().items(Joi.string().min(3).required()),
+      description: Joi.string().min(3).required(),
+    }),
+  }),
+  classesController.update
+);
 //---> /classes/:classId
-classesRouter.delete("/:classId", classesController.delete);
+classesRouter.delete(
+  "/:classId",
+  celebrate({
+    params: {
+      classId: Joi.string().uuid().required(),
+    },
+  }),
+  classesController.delete
+);
 //---> /classes/:classId/students
-classesRouter.post("/:classId/students", enrollmentsController.create);
+classesRouter.post(
+  "/:classId/students",
+  celebrate({
+    params: {
+      classId: Joi.string().uuid().required(),
+    },
+    body: Joi.object().keys({
+      tutorId: Joi.string().uuid().required(),
+    }),
+  }),
+  enrollmentsController.create
+);
 //---> /classes/:classId/students
-classesRouter.delete("/:classId/students", enrollmentsController.delete);
+classesRouter.delete(
+  "/:classId/students",
+  celebrate({
+    params: {
+      classId: Joi.string().uuid().required(),
+    },
+  }),
+  enrollmentsController.delete
+);
 
 export default classesRouter;
