@@ -1,4 +1,5 @@
 import "reflect-metadata";
+import "dotenv/config";
 import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import "express-async-errors";
@@ -37,6 +38,6 @@ server.use((e: Error, req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-server.listen(4000, () => {
+server.listen(process.env.BACKEND_PORT, () => {
   console.log("✅  Server up");
 });

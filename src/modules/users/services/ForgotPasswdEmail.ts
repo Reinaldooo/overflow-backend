@@ -51,7 +51,7 @@ export default class ForgotPasswdEmail {
         file: forgotPasswdTemplate,
         variables: {
           name: user.name,
-          link: `http://localhost:3000/passwd/forgot?tk=${token}`,
+          link: `${process.env.FRONTEND_WEB_URL}/passwd/forgot?tk=${token}`,
         },
       },
     });
