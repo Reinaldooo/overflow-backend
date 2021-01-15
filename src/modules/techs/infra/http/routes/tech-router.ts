@@ -2,9 +2,11 @@ import { Router } from "express";
 import { celebrate, Joi } from "celebrate";
 //
 import checkAuth from "../middleware/checkAuth";
-import TechsController from "../controllers/TechsCTRL";
+import TechsCTRL from "../controllers/TechsCTRL";
+import SearchTechsCTRL from "../controllers/SearchTechsCTRL";
 
-const techsController = new TechsController();
+const techsCTRL = new TechsCTRL();
+const searchTechsCTRL = new SearchTechsCTRL();
 const techRouter = Router();
 techRouter.use(checkAuth);
 
@@ -17,7 +19,7 @@ techRouter.post(
       image: Joi.string().required(),
     }),
   }),
-  techsController.create
+  techsCTRL.create
 );
 //---> /techs/search
 techRouter.post(
@@ -27,7 +29,7 @@ techRouter.post(
       searchName: Joi.string().min(3).required(),
     },
   }),
-  techsController.index
+  searchTechsCTRL.index
 );
 
 export default techRouter;
