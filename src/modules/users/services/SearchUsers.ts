@@ -1,4 +1,5 @@
 import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 //
 import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
@@ -21,7 +22,8 @@ export default class SearchUsers {
       throw new AppError("Please include at least 3 chars.");
     }
 
-    const foundUsers = this.usersRepository.findByName(searchName);
+    let foundUsers = await this.usersRepository.findByName(searchName);
+    foundUsers = foundUsers.map(u => classToClass(u));
 
     return foundUsers;
   }

@@ -8,6 +8,7 @@ import {
   JoinTable,
   OneToMany,
 } from "typeorm";
+import { Exclude, Expose } from "class-transformer";
 //
 import Class from "../../../../classes/infra/typeorm/entities/Class";
 
@@ -29,6 +30,7 @@ export default class User {
   email: string;
 
   @Column()
+  @Exclude()
   passwd: string;
 
   @Column({ nullable: true })
@@ -46,4 +48,13 @@ export default class User {
 
   @UpdateDateColumn({ type: "timestamptz" })
   updatedAt: Date;
+
+  // This, plus the Exclude decorator are used to remodel the entity using the
+  // classToClass function
+  @Expose({ name: "avatarUrl" })
+  getAvatarUrl(): string {
+    return this.avatar
+      ? `${process.env.BACKEND_URL}/files/${this.avatar}`
+      : null;
+  }
 }

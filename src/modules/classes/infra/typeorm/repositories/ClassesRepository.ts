@@ -36,9 +36,17 @@ export default class ClassesRepository implements IClassesRepository {
   public async findAllByUserId(
     userId: string
   ): Promise<IFindAllByUserIdModel | undefined> {
-    const teaching = await this.ormRepo.find({
-      where: { tutorId: userId },
-    });
+    const teaching = await this.ormRepo
+      .createQueryBuilder("class")
+      .where("class.tutorId = :userId", { userId })
+      .leftJoin("class.techs", "tech")
+      .leftJoin("class.students", "student")
+      .select("class")
+      .addSelect("tech.name")
+      .addSelect("tech.image")
+      .addSelect("student.name")
+      .addSelect("student.avatar")
+      .getMany();
 
     const studying = await this.ormRepo
       .createQueryBuilder("class")
@@ -52,9 +60,18 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async findTutorClasses(tutorId: string): Promise<Class[] | undefined> {
-    const classes = await this.ormRepo.find({
-      where: { tutorId },
-    });
+    const classes = await this.ormRepo
+      .createQueryBuilder("class")
+      .where("class.tutorId = :tutorId", { tutorId })
+      .leftJoin("class.techs", "tech")
+      .leftJoin("class.students", "student")
+      .select("class")
+      .addSelect("tech.name")
+      .addSelect("tech.image")
+      .addSelect("student.name")
+      .addSelect("student.avatar")
+      .getMany();
+
     return classes;
   }
 

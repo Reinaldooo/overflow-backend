@@ -1,5 +1,6 @@
 import { isBefore, isEqual, startOfHour } from "date-fns";
 import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 //
 import AppError from "@shared/errors/AppError";
 import Class from "../infra/typeorm/entities/Class";
@@ -103,6 +104,8 @@ export default class EditClass {
       techs: techsFound,
       description,
     });
+
+    updatedClass.students = updatedClass.students.map(s => classToClass(s));
 
     return updatedClass;
   }

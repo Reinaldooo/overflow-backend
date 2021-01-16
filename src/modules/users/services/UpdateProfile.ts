@@ -1,4 +1,5 @@
 import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 
 import AppError from "@shared/errors/AppError";
 import IHashProvider from "../providers/HashProvider/models/IHashProvider";
@@ -53,6 +54,9 @@ class UpdateProfileService {
     }
 
     if (passwd && old_passwd) {
+      if (passwd === old_passwd) {
+        throw new AppError("New password must be different.");
+      }
       const oldPassIsValid = await this.hashProvider.compareHash(
         old_passwd,
         user.passwd
@@ -65,7 +69,9 @@ class UpdateProfileService {
       user.passwd = await this.hashProvider.generateHash(passwd);
     }
 
-    return this.usersRepository.save(user);
+    const updatedUser = await this.usersRepository.save(user);
+
+    return classToClass(updatedUser);
   }
 }
 

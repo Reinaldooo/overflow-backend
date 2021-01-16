@@ -31,7 +31,6 @@ export default class ProfileController {
       old_passwd,
       passwd,
     });
-    delete user.passwd;
     return res.send(user);
   }
 }

@@ -1,5 +1,6 @@
 import { injectable, inject } from "tsyringe";
-
+import { classToClass } from "class-transformer";
+//
 import AppError from "@shared/errors/AppError";
 import IUsersRepository from "../repositories/IUsersRepository";
 
@@ -23,7 +24,6 @@ export default class ShowProfileSvc {
       throw new AppError("User not found");
     }
 
-    delete user.passwd;
-    return user;
+    return classToClass(user);
   }
 }

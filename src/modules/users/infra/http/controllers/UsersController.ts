@@ -27,7 +27,6 @@ export default class UsersController {
       email,
       passwd,
     });
-    delete user.passwd;
     return res.send(user);
   }
 }

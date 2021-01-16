@@ -1,5 +1,6 @@
 import { injectable, inject } from "tsyringe";
 import { sign } from "jsonwebtoken";
+import { classToClass } from "class-transformer";
 //
 import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
@@ -31,13 +32,16 @@ export default class AuthUser {
     passwd,
   }: RequestModel): Promise<ResponseModel> {
     const user = await this.usersRepository.findByEmail(email);
+
     if (!user) throw new AppError("Invalid mail/password.");
+
     const passMatch = await this.hashProvider.compareHash(passwd, user.passwd);
+
     if (!passMatch) throw new AppError("Invalid mail/password.");
 
     const { jwt } = authConfig;
     const token = sign({ id: user.id }, jwt.phrase, jwt.options);
 
-    return { user, token };
+    return { user: classToClass(user), token };
   }
 }

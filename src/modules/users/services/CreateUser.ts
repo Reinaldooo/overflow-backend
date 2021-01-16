@@ -1,4 +1,5 @@
 import { injectable, inject } from "tsyringe";
+import { classToClass } from "class-transformer";
 //
 import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
@@ -36,8 +37,6 @@ export default class CreateUser {
       passwd: hashedPasswd,
     });
 
-    // delete user.passwd;
-
-    return user;
+    return classToClass(user);
   }
 }
