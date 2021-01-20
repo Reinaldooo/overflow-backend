@@ -2,7 +2,7 @@ import { Router } from "express";
 import { celebrate, Joi } from "celebrate";
 import multer from "multer";
 //
-import { multerConfig } from "@config/upload";
+import uploadConfig from "@config/upload";
 import checkAuth from "../middleware/checkAuth";
 import UsersController from "../controllers/UsersController";
 import UserAvatarController from "../controllers/UserAvatarController";
@@ -10,7 +10,7 @@ import UserAvatarController from "../controllers/UserAvatarController";
 const usersController = new UsersController();
 const userAvatarController = new UserAvatarController();
 const userRouter = Router();
-const upload = multer(multerConfig);
+const upload = multer(uploadConfig.multer);
 
 //---> /users
 userRouter.post(

@@ -10,6 +10,7 @@ import {
 } from "typeorm";
 import { Exclude, Expose } from "class-transformer";
 //
+import uploadConfig from "@config/upload";
 import Class from "../../../../classes/infra/typeorm/entities/Class";
 
 // This is a decorator, it works like a function and the class is as argument
@@ -53,8 +54,12 @@ export default class User {
   // classToClass function
   @Expose({ name: "avatarUrl" })
   getAvatarUrl(): string {
-    return this.avatar
-      ? `${process.env.BACKEND_URL}/files/${this.avatar}`
-      : null;
+    if (!this.avatar) {
+      return null;
+    }
+
+    return uploadConfig.driver === "s3"
+      ? `https://${process.env.S3_BUCKET_NAME}.s3.amazonaws.com/${this.avatar}`
+      : `${process.env.BACKEND_URL}/files/${this.avatar}`;
   }
 }
