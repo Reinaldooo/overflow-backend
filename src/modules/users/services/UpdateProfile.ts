@@ -38,14 +38,18 @@ class UpdateProfileService {
       throw new AppError("User not found");
     }
 
-    const emailIsUsed = await this.usersRepository.findByEmail(email);
+    if (email) {
+      const emailIsUsed = await this.usersRepository.findByEmail(email);
 
-    if (emailIsUsed && emailIsUsed.id !== userId) {
-      throw new AppError("E-mail already in use");
+      if (emailIsUsed && emailIsUsed.id !== userId) {
+        throw new AppError("E-mail already in use");
+      }
+      user.email = email;
     }
 
-    user.name = name;
-    user.email = email;
+    if (name) {
+      user.name = name;
+    }
 
     if (passwd && !old_passwd) {
       throw new AppError(

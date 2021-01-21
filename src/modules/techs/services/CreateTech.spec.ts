@@ -27,8 +27,6 @@ describe("Create User", () => {
       passwd: "123456",
     });
 
-    user.admin = true;
-
     const tech = await createTech.execute({
       name: "nodejs",
       image: "testImage",
@@ -40,8 +38,8 @@ describe("Create User", () => {
   //
   it("Should not be able to create tech if user is not admin or invalid", async () => {
     const user = await createUser.execute({
-      name: "Reinaldo",
-      email: "rewifetri@gmail.com",
+      name: "Other",
+      email: "other@gmail.com",
       passwd: "123456",
     });
 
@@ -68,7 +66,6 @@ describe("Create User", () => {
       email: "rewifetri@gmail.com",
       passwd: "123456",
     });
-    user.admin = true;
 
     await expect(
       createTech.execute({
@@ -101,7 +98,6 @@ describe("Create User", () => {
       email: "rewifetri@gmail.com",
       passwd: "123456",
     });
-    user.admin = true;
 
     await createTech.execute({
       name: "nodejs",

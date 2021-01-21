@@ -43,8 +43,6 @@ describe("List Techs with more classes", () => {
       passwd: "123456",
     });
 
-    user0.admin = true;
-
     await createTech.execute({
       name: "nodejs",
       image: "testImage",

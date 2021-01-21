@@ -44,8 +44,6 @@ describe("List classes by tech", () => {
       passwd: "123456",
     });
 
-    user0.admin = true;
-
     await createTech.execute({
       name: "nodejs",
       image: "testImage",
@@ -59,21 +57,21 @@ describe("List classes by tech", () => {
     });
 
     class0 = await createClass.execute({
-      date: new Date(2021, 0, 15, 15),
+      date: new Date(2025, 0, 15, 15),
       tutorId: user0.id,
       description: "Test description",
       techs: ["nodejs"],
     });
 
     class1 = await createClass.execute({
-      date: new Date(2021, 0, 15, 16),
+      date: new Date(2025, 0, 15, 16),
       tutorId: user0.id,
       description: "Test description",
       techs: ["nodejs"],
     });
 
     class2 = await createClass.execute({
-      date: new Date(2021, 0, 15, 17),
+      date: new Date(2025, 0, 15, 17),
       tutorId: user0.id,
       description: "Test description",
       techs: ["reactjs"],

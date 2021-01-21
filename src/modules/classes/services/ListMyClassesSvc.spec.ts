@@ -49,8 +49,6 @@ describe("List user classes", () => {
       passwd: "123456",
     });
 
-    user.admin = true;
-
     const user2 = await createUser.execute({
       name: "Reinaldo2",
       email: "rewifetri2@gmail.com",

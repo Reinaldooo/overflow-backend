@@ -1,21 +1,25 @@
+import "dotenv/config";
+//
 import AppError from "@shared/errors/AppError";
 import FakeHashProvider from "../providers/HashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "../repositories/fakes/FakeUsersRepository";
 import UpdateProfileService from "./UpdateProfile";
+import AuthUser from "./AuthUser";
 
 let fakeUsersRepository: FakeUsersRepository;
 let fakeHashProvider: FakeHashProvider;
+let authUser: AuthUser;
 let updateProfileService: UpdateProfileService;
 
 describe("UpdateUserProfile", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
-
     updateProfileService = new UpdateProfileService(
       fakeUsersRepository,
       fakeHashProvider
     );
+    authUser = new AuthUser(fakeUsersRepository, fakeHashProvider);
   });
 
   it("should be able to update the user profile", async () => {
@@ -64,15 +68,19 @@ describe("UpdateUserProfile", () => {
       passwd: "123456",
     });
 
-    const updatedUser = await updateProfileService.execute({
+    await updateProfileService.execute({
       userId: user.id,
-      name: "Test",
-      email: "test@example.com",
       old_passwd: "123456",
       passwd: "123123",
     });
 
-    expect(updatedUser.passwd).toBe("123123");
+    const res = await authUser.execute({
+      email: "rewifetri@gmail.com",
+      passwd: "123123",
+    });
+
+    expect(res).toHaveProperty("token");
+    expect(res.user.id).toBe(user.id);
   });
 
   it("should not be able to update the password without old password", async () => {

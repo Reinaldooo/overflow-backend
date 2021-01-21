@@ -42,8 +42,6 @@ describe("Delete Class", () => {
       passwd: "123456",
     });
 
-    user.admin = true;
-
     await createTech.execute({
       name: "nodejs",
       image: "testImage",

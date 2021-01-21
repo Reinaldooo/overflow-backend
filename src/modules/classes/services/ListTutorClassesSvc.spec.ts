@@ -40,8 +40,6 @@ describe("List tutor classes", () => {
       passwd: "123456",
     });
 
-    user.admin = true;
-
     await createTech.execute({
       name: "nodejs",
       image: "testImage",
@@ -49,14 +47,14 @@ describe("List tutor classes", () => {
     });
 
     await createClass.execute({
-      date: new Date(2021, 0, 15, 15),
+      date: new Date(2025, 0, 15, 15),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],
     });
 
     await createClass.execute({
-      date: new Date(2021, 0, 15, 16),
+      date: new Date(2025, 0, 15, 16),
       tutorId: user.id,
       description: "Test description",
       techs: ["nodejs"],

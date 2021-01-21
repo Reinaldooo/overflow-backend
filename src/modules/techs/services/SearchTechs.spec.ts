@@ -27,7 +27,6 @@ describe("Search Techs", () => {
       email: "rewifetri@gmail.com",
       passwd: "123456",
     });
-    user.admin = true;
 
     await createTech.execute({
       name: "nodejs",

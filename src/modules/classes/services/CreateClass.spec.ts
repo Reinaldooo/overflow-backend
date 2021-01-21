@@ -37,8 +37,6 @@ describe("Create Class", () => {
       passwd: "123456",
     });
 
-    user.admin = true;
-
     await createTech.execute({
       name: "nodejs",
       image: "testImage",
@@ -63,8 +61,6 @@ describe("Create Class", () => {
       email: "rewifetri@gmail.com",
       passwd: "123456",
     });
-
-    user.admin = true;
 
     await createTech.execute({
       name: "nodejs",
@@ -112,8 +108,6 @@ describe("Create Class", () => {
       email: "rewifetri@gmail.com",
       passwd: "123456",
     });
-
-    user.admin = true;
 
     await createTech.execute({
       name: "nodejs",

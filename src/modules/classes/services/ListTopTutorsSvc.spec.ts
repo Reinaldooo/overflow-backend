@@ -44,8 +44,6 @@ describe("List Tutors with more classes", () => {
       passwd: "123456",
     });
 
-    user0.admin = true;
-
     user1 = await createUser.execute({
       name: "Reinaldo1",
       email: "rewifetri1@gmail.com",

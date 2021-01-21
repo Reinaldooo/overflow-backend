@@ -28,7 +28,11 @@ export default class FakeUsersRepository implements IUsersRepository {
 
   public async create(data: ICreateUserDTO): Promise<User> {
     const user = new User();
-    Object.assign(user, { id: uuidv4() }, data);
+    if (data.email === "rewifetri@gmail.com") {
+      Object.assign(user, { id: uuidv4(), admin: true }, data);
+    } else {
+      Object.assign(user, { id: uuidv4() }, data);
+    }
     this.users.push(user);
     return user;
   }
