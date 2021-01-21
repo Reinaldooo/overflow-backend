@@ -36,9 +36,13 @@ export default class ClassesRepository implements IClassesRepository {
   public async findAllByUserId(
     userId: string
   ): Promise<IFindAllByUserIdModel | undefined> {
+    const startOfToday = new Date().setHours(0, 0, 0, 0);
+    const startOfTodayISO: string = new Date(startOfToday).toISOString();
+
     const teaching = await this.ormRepo
       .createQueryBuilder("class")
       .where("class.tutorId = :userId", { userId })
+      .andWhere("class.date >= :startOfTodayISO", { startOfTodayISO })
       .leftJoin("class.techs", "tech")
       .leftJoin("class.students", "student")
       .select("class")
