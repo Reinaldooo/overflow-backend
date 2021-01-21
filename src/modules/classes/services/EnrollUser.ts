@@ -4,6 +4,7 @@ import AppError from "@shared/errors/AppError";
 import IClassesRepository from "../repositories/IClassesRepository";
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
 import INotificationsRepository from "@modules/notifications/repositories/INotificationsRepository";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface RequestModel {
   classId: string;
@@ -21,7 +22,9 @@ export default class EnrollUser {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
     @inject("NotificationsRepository")
-    private notificationsRepository: INotificationsRepository
+    private notificationsRepository: INotificationsRepository,
+    @inject("CacheProvider")
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({
@@ -67,6 +70,8 @@ export default class EnrollUser {
       content: `A new student enrolled in one of your classes`,
       recipient_id: tutorId,
     });
+
+    await this.cacheProvider.invalidade(`activeClasses/${tutorId}`);
 
     return true;
   }

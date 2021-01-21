@@ -2,6 +2,7 @@ import { injectable, inject } from "tsyringe";
 //
 import AppError from "@shared/errors/AppError";
 import IClassesRepository from "../repositories/IClassesRepository";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface RequestModel {
   classId: string;
@@ -14,7 +15,9 @@ export default class UnenrollUserSvc {
 
   constructor(
     @inject("ClassesRepository")
-    private classesRepository: IClassesRepository
+    private classesRepository: IClassesRepository,
+    @inject("CacheProvider")
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({ classId, userId }: RequestModel): Promise<boolean> {
@@ -39,6 +42,8 @@ export default class UnenrollUserSvc {
 
     _class.students = _class.students.filter(s => s.id !== userId);
     await this.classesRepository.save(_class);
+
+    await this.cacheProvider.invalidade(`activeClasses/${_class.tutorId}`);
 
     return true;
   }

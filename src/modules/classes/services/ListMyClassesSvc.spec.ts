@@ -5,6 +5,7 @@ import EnrollUser from "./EnrollUser";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import FakeNotificationsRepository from "@modules/notifications/repositories/fakes/FakeNotificationsRepository";
 import CreateUser from "@modules/users/services/CreateUser";
@@ -19,12 +20,14 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe("List user classes", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -32,13 +35,18 @@ describe("List user classes", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
-    listMyClassesSvc = new ListMyClassesSvc(fakeClassesRepository);
+    listMyClassesSvc = new ListMyClassesSvc(
+      fakeClassesRepository,
+      fakeCacheProvider
+    );
     enrollUser = new EnrollUser(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     );
   });
   //

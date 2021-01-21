@@ -3,6 +3,7 @@ import { injectable, inject } from "tsyringe";
 import AppError from "@shared/errors/AppError";
 import IClassesRepository from "../repositories/IClassesRepository";
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface RequestModel {
   tutorId: string;
@@ -17,7 +18,9 @@ export default class DeleteClass {
     @inject("ClassesRepository")
     private classesRepository: IClassesRepository,
     @inject("UsersRepository")
-    private usersRepository: IUsersRepository
+    private usersRepository: IUsersRepository,
+    @inject("CacheProvider")
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({ tutorId, classId }: RequestModel): Promise<boolean> {
@@ -39,6 +42,7 @@ export default class DeleteClass {
     }
 
     const removedClass = await this.classesRepository.delete(classId);
+    await this.cacheProvider.invalidade(`activeClasses/${tutorId}`);
 
     return removedClass;
   }

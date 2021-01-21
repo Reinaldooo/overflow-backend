@@ -7,6 +7,7 @@ import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 
 let fakeClassesRepository: FakeClassesRepository;
 let createClass: CreateClass;
@@ -16,11 +17,13 @@ let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe("List tutor classes", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -28,7 +31,8 @@ describe("List tutor classes", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
     listTutorClassesSvc = new ListTutorClassesSvc(fakeClassesRepository);
   });

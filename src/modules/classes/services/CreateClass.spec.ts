@@ -4,6 +4,7 @@ import CreateClass from "./CreateClass";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 
@@ -14,11 +15,13 @@ let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 
 describe("Create Class", () => {
   beforeEach(() => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -26,7 +29,8 @@ describe("Create Class", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
   });
   //

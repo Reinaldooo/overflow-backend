@@ -5,6 +5,7 @@ import ListClassesByTechSvc from "./ListClassesByTechSvc";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
@@ -18,6 +19,7 @@ let createTech: CreateTech;
 let fakeUsersRepository: FakeUsersRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let user0: User;
 let class0: Class;
 let class1: Class;
@@ -27,6 +29,7 @@ describe("List classes by tech", () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -34,7 +37,8 @@ describe("List classes by tech", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
     listClassesByTechSvc = new ListClassesByTechSvc(fakeClassesRepository);
 

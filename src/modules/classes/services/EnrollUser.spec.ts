@@ -5,6 +5,7 @@ import EnrollUser from "./EnrollUser";
 import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepository";
 import CreateTech from "@modules/techs/services/CreateTech";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 import FakeNotificationsRepository from "@modules/notifications/repositories/fakes/FakeNotificationsRepository";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
@@ -20,6 +21,7 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let user0: User;
 let user1: User;
 let class0: Class;
@@ -30,6 +32,7 @@ describe("Enroll user in class", () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -37,12 +40,14 @@ describe("Enroll user in class", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
     enrollUser = new EnrollUser(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     );
 
     user0 = await createUser.execute({

@@ -4,6 +4,7 @@ import FakeTechsRepository from "@modules/techs/repositories/fakes/FakeTechsRepo
 import CreateTech from "@modules/techs/services/CreateTech";
 import ListTopTutorsSvc from "@modules/classes/services/ListTopTutorsSvc";
 import FakeHashProvider from "@modules/users/providers/HashProvider/fakes/FakeHashProvider";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepository";
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
@@ -17,6 +18,7 @@ let listTopTutorsSvc: ListTopTutorsSvc;
 let fakeUsersRepository: FakeUsersRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let user0: User;
 let user1: User;
 let class0: Class;
@@ -27,6 +29,7 @@ describe("List Tutors with more classes", () => {
   beforeEach(async () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -35,7 +38,8 @@ describe("List Tutors with more classes", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
 
     user0 = await createUser.execute({

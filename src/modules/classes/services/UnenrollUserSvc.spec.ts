@@ -11,6 +11,7 @@ import FakeUsersRepository from "@modules/users/repositories/fakes/FakeUsersRepo
 import CreateUser from "@modules/users/services/CreateUser";
 import User from "@modules/users/infra/typeorm/entities/User";
 import Class from "@modules/classes/infra/typeorm/entities/Class";
+import FakeCacheProvider from "@shared/container/providers/CacheProvider/fakes/FakeCacheProvider";
 
 let fakeClassesRepository: FakeClassesRepository;
 let createClass: CreateClass;
@@ -22,6 +23,7 @@ let fakeUsersRepository: FakeUsersRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
 let createUser: CreateUser;
 let fakeHashProvider: FakeHashProvider;
+let fakeCacheProvider: FakeCacheProvider;
 let user0: User;
 let user1: User;
 let class0: Class;
@@ -32,6 +34,7 @@ describe("Unenroll user of class", () => {
     fakeUsersRepository = new FakeUsersRepository();
     fakeNotificationsRepository = new FakeNotificationsRepository();
     fakeHashProvider = new FakeHashProvider();
+    fakeCacheProvider = new FakeCacheProvider();
     createUser = new CreateUser(fakeUsersRepository, fakeHashProvider);
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
@@ -39,14 +42,19 @@ describe("Unenroll user of class", () => {
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeTechsRepository
+      fakeTechsRepository,
+      fakeCacheProvider
     );
     enrollUser = new EnrollUser(
       fakeClassesRepository,
       fakeUsersRepository,
-      fakeNotificationsRepository
+      fakeNotificationsRepository,
+      fakeCacheProvider
     );
-    unenrollUserSvc = new UnenrollUserSvc(fakeClassesRepository);
+    unenrollUserSvc = new UnenrollUserSvc(
+      fakeClassesRepository,
+      fakeCacheProvider
+    );
 
     user0 = await createUser.execute({
       name: "Reinaldo",

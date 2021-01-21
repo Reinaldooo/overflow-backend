@@ -6,6 +6,7 @@ import Class from "../infra/typeorm/entities/Class";
 import IClassesRepository from "../repositories/IClassesRepository";
 import ITechsRepository from "@modules/techs/repositories/ITechsRepository";
 import IUsersRepository from "@modules/users/repositories/IUsersRepository";
+import ICacheProvider from "@shared/container/providers/CacheProvider/models/ICacheProvider";
 
 interface RequestModel {
   tutorId: string;
@@ -24,7 +25,9 @@ export default class CreateClass {
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
     @inject("TechsRepository")
-    private techsRepository: ITechsRepository
+    private techsRepository: ITechsRepository,
+    @inject("CacheProvider")
+    private cacheProvider: ICacheProvider
   ) {}
 
   public async execute({
@@ -85,6 +88,8 @@ export default class CreateClass {
       techs: techsFound,
       description,
     });
+
+    await this.cacheProvider.invalidade(`activeClasses/${tutorId}`);
 
     return _class;
   }
