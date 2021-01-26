@@ -33,7 +33,10 @@ describe("List Techs with more classes", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    listTopTechsSvc = new ListTopTechsSvc(fakeClassesRepository);
+    listTopTechsSvc = new ListTopTechsSvc(
+      fakeClassesRepository,
+      fakeCacheProvider
+    );
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,

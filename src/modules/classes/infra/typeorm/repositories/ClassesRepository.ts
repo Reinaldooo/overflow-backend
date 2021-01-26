@@ -99,7 +99,7 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async listTopTechs(): Promise<ITopRankModel[]> {
-    let techsRank = await this.ormRepo
+    const techsRank = await this.ormRepo
       .createQueryBuilder("class")
       .leftJoin("class.techs", "techs")
       .select("techs.name", "name")
@@ -113,7 +113,7 @@ export default class ClassesRepository implements IClassesRepository {
   }
 
   public async listTopTutors(): Promise<ITopRankModel[]> {
-    let techsRank = await this.ormRepo
+    const tutorsRank = await this.ormRepo
       .createQueryBuilder("class")
       .leftJoin("class.tutor", "tutor")
       .select("tutor.id", "tutorid")
@@ -124,7 +124,7 @@ export default class ClassesRepository implements IClassesRepository {
       .limit(10)
       .getRawMany();
 
-    return techsRank;
+    return tutorsRank;
   }
 
   public async create(data: ICreateClassDTO): Promise<Class> {

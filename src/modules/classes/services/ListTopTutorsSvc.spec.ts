@@ -34,7 +34,10 @@ describe("List Tutors with more classes", () => {
     fakeTechsRepository = new FakeTechsRepository();
     createTech = new CreateTech(fakeTechsRepository, fakeUsersRepository);
     fakeClassesRepository = new FakeClassesRepository();
-    listTopTutorsSvc = new ListTopTutorsSvc(fakeClassesRepository);
+    listTopTutorsSvc = new ListTopTutorsSvc(
+      fakeClassesRepository,
+      fakeCacheProvider
+    );
     createClass = new CreateClass(
       fakeClassesRepository,
       fakeUsersRepository,
