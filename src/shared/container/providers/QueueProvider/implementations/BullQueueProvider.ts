@@ -2,8 +2,9 @@ import Queue from "bull";
 //
 import IQueueProvider from "../models/IQueueProvider";
 import updateRanksCache from "@modules/classes/infra/jobs/updateRanksCache";
+import sendPassRecoveryMail from "@modules/users/infra/jobs/sendPassRecoveryMail";
 
-const jobs = [updateRanksCache];
+const jobs = [updateRanksCache, sendPassRecoveryMail];
 
 export default class BullQueueProvider implements IQueueProvider {
   queues: any = [];
@@ -31,7 +32,9 @@ export default class BullQueueProvider implements IQueueProvider {
       queue.bull.process(queue.handle);
 
       queue.bull.on("failed", (job, err) => {
-        throw new Error(`Queue job failed: ${queue.key}-${err}`);
+        console.log(job.queue.name);
+        console.log(err);
+        throw new Error(`Queue job failed: ${job.queue.name}`);
       });
     });
   }

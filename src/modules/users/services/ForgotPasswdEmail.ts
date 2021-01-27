@@ -3,8 +3,8 @@ import path from "path";
 //
 import IUsersRepository from "../repositories/IUsersRepository";
 import IPassRecoveryTokenRepository from "../repositories/IPassRecoveryTokenRepository";
-import IMailProvider from "@providers/MailProvider/models/IMailProvider";
 import AppError from "@shared/errors/AppError";
+import IQueueProvider from "@shared/container/providers/QueueProvider/models/IQueueProvider";
 
 interface RequestModel {
   email: string;
@@ -17,8 +17,8 @@ export default class ForgotPasswdEmail {
   constructor(
     @inject("UsersRepository")
     private usersRepository: IUsersRepository,
-    @inject("MailProvider")
-    private mailProvider: IMailProvider,
+    @inject("QueueProvider")
+    private queueProvider: IQueueProvider,
     @inject("PassRecoveryTokenRepository")
     private passRecoveryTokenRepository: IPassRecoveryTokenRepository
   ) {}
@@ -41,20 +41,10 @@ export default class ForgotPasswdEmail {
       "forgotPasswd.hbs"
     );
 
-    await this.mailProvider.sendMail({
-      to: {
-        name: user.name,
-        email: user.email,
-      },
-      subject: "Overflow - Recuperação de senha",
-      templateData: {
-        file: forgotPasswdTemplate,
-        variables: {
-          name: user.name,
-          link: `${process.env.FRONTEND_WEB_URL}/passwd/forgot?tk=${token}`,
-          token,
-        },
-      },
+    this.queueProvider.add("SendPassRecoveryMail", {
+      user,
+      forgotPasswdTemplate,
+      token,
     });
   }
 }
