@@ -6,6 +6,20 @@ import Class from "../typeorm/entities/Class";
 
 const redis = new RedisCache();
 
+(async function () {
+  await createConnection({
+    name: "queue",
+    type: "postgres",
+    host: "localhost",
+    port: 2452,
+    username: "worker",
+    password: "post0210",
+    database: "overflow",
+    synchronize: true,
+    entities: ["src/modules/**/infra/typeorm/entities/*.ts"],
+  });
+})();
+
 // This is a overkill for a small app, but as it grows, it's cool to cache
 // complex queries that don't need to be accurate to the second.
 export default {
@@ -16,18 +30,6 @@ export default {
   },
   async handle() {
     console.log("Rank", new Date().toLocaleString());
-
-    await createConnection({
-      name: "queue",
-      type: "postgres",
-      host: "localhost",
-      port: 2452,
-      username: "worker",
-      password: "post0210",
-      database: "overflow",
-      synchronize: true,
-      entities: ["src/modules/**/infra/typeorm/entities/*.ts"],
-    });
 
     const ormRepo = getRepository(Class, "queue");
 
