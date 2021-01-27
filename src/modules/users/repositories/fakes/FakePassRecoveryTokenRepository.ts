@@ -30,4 +30,9 @@ export default class FakePassRecoveryTokenRepository
     );
     return foundToken;
   }
+  public async delete(tokenId: string): Promise<void> {
+    this.passRecoveryTokens = this.passRecoveryTokens.filter(
+      token => token.id !== tokenId
+    );
+  }
 }

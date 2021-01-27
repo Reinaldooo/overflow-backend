@@ -40,9 +40,11 @@ describe("Reset Password", () => {
     });
 
     const updatedUser = await fakeUsersRepository.findById(user.id);
+    const token = await fakePassRecoveryTokenRepository.findById(tokenId);
 
     expect(generateHash).toHaveBeenCalledWith("newpass");
     expect(updatedUser?.passwd).toBe("newpass");
+    expect(token).toBeFalsy();
   });
   //
   it("Should not be able to reset password with invalid token", async () => {

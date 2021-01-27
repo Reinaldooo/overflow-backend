@@ -22,4 +22,8 @@ export default class PassRecoveryTokenRepository
     await this.ormRepo.save(passToken);
     return passToken;
   }
+
+  public async delete(id: string): Promise<void> {
+    await this.ormRepo.delete(id);
+  }
 }

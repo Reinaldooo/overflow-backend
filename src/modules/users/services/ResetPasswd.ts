@@ -38,5 +38,6 @@ export default class ResetPasswd {
     // Hash will come later
     user.passwd = await this.hashProvider.generateHash(passwd);
     await this.usersRepository.save(user);
+    await this.passRecoveryTokenRepository.delete(token.id);
   }
 }
