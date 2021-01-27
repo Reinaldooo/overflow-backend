@@ -20,7 +20,7 @@ export default {
         file: forgotPasswdTemplate,
         variables: {
           name: user.name,
-          link: `${process.env.FRONTEND_WEB_URL}/passwd/forgot?tk=${token}`,
+          link: `${process.env.FRONTEND_WEB_URL}/passwd-reset/${token}`,
           token,
         },
       },
