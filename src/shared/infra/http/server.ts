@@ -5,6 +5,7 @@ import cors from "cors";
 import "express-async-errors";
 import { errors } from "celebrate";
 //
+import rateLimiter from "@shared/infra/http/middleware/rateLimiter";
 import routes from "./routes";
 import { uploadsDirConfig } from "@config/upload";
 import AppError from "@shared/errors/AppError";
@@ -14,6 +15,7 @@ import "@shared/container";
 
 const server = express();
 
+server.use(rateLimiter);
 server.use(express.json());
 server.use(cors());
 server.use("/files", express.static(uploadsDirConfig.destination));
