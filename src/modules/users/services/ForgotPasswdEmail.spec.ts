@@ -42,11 +42,11 @@ describe("Password recovery", () => {
   });
   //
   it("Should not be able to recover passwd using invalid email", async () => {
-    await expect(
-      forgotPasswdEmail.execute({
-        email: "non-existant-email",
-      })
-    ).rejects.toBeInstanceOf(AppError);
+    const sendMail = jest.spyOn(fakeQueueProvider, "add");
+    await forgotPasswdEmail.execute({
+      email: "non-existant-email",
+    });
+    expect(sendMail).not.toHaveBeenCalled();
   });
   //
   it("Should generate forgot passwd token", async () => {

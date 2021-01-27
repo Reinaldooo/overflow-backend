@@ -26,25 +26,26 @@ export default class ForgotPasswdEmail {
   public async execute({ email }: RequestModel): Promise<void> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if (!user) {
-      throw new AppError("User does not exist.");
+    if (user) {
+      // If the user exists continue with the process, but if it don't, no errors
+      // should be returned since hackers can use this to check if a person has
+      // an account in the site
+      const { id: token } = await this.passRecoveryTokenRepository.generate(
+        user.id
+      );
+
+      const forgotPasswdTemplate = path.resolve(
+        __dirname,
+        "..",
+        "views",
+        "forgotPasswd.hbs"
+      );
+
+      this.queueProvider.add("SendPassRecoveryMail", {
+        user,
+        forgotPasswdTemplate,
+        token,
+      });
     }
-
-    const { id: token } = await this.passRecoveryTokenRepository.generate(
-      user.id
-    );
-
-    const forgotPasswdTemplate = path.resolve(
-      __dirname,
-      "..",
-      "views",
-      "forgotPasswd.hbs"
-    );
-
-    this.queueProvider.add("SendPassRecoveryMail", {
-      user,
-      forgotPasswdTemplate,
-      token,
-    });
   }
 }
