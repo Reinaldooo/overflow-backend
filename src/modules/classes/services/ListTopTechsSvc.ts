@@ -19,8 +19,8 @@ export default class ListTopTechsSvc {
 
   public async execute(): Promise<ITopRankModel[]> {
     const [cachedTechsRank, cacheTime] = await Promise.all([
-      await this.cacheProvider.get("techsRank"),
-      await this.cacheProvider.get("techsRankTime"),
+      this.cacheProvider.get("techsRank"),
+      this.cacheProvider.get("techsRankTime"),
     ]);
 
     const cacheAge = differenceInMinutes(Date.now(), Number(cacheTime));

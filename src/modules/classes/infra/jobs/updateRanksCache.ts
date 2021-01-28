@@ -1,10 +1,12 @@
 import "dotenv/config";
+import { container } from "tsyringe";
 import { getRepository, createConnection } from "typeorm";
 //
+import "@shared/container/providers/CacheProvider";
 import RedisCache from "@shared/container/providers/CacheProvider/implementations/RedisCache";
 import Class from "../typeorm/entities/Class";
 
-const redis = new RedisCache();
+const redis = container.resolve<RedisCache>("CacheProvider");
 
 (async function () {
   await createConnection({
@@ -56,9 +58,11 @@ export default {
 
     const currTime = Date.now();
 
-    await redis.save("tutorsRank", JSON.stringify(tutorsRank));
-    await redis.save("tutorsRankTime", currTime);
-    await redis.save("techsRank", JSON.stringify(techsRank));
-    await redis.save("techsRankTime", currTime);
+    await Promise.all([
+      redis.save("tutorsRank", JSON.stringify(tutorsRank)),
+      redis.save("tutorsRankTime", currTime),
+      redis.save("techsRank", JSON.stringify(techsRank)),
+      redis.save("techsRankTime", currTime),
+    ]);
   },
 };
