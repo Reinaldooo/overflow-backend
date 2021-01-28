@@ -5,7 +5,9 @@ import cors from "cors";
 import "express-async-errors";
 import { errors } from "celebrate";
 //
-import rateLimiter from "@shared/infra/http/middleware/rateLimiter";
+import globalRateLimiter, {
+  filesRateLimiter,
+} from "@shared/infra/http/middleware/rateLimiters";
 import routes from "./routes";
 import { uploadsDirConfig } from "@config/upload";
 import AppError from "@shared/errors/AppError";
@@ -15,10 +17,14 @@ import "@shared/container";
 
 const server = express();
 
-server.use(rateLimiter);
 server.use(express.json());
 server.use(cors());
-server.use("/files", express.static(uploadsDirConfig.destination));
+server.use(
+  "/files",
+  filesRateLimiter,
+  express.static(uploadsDirConfig.destination)
+);
+server.use(globalRateLimiter);
 server.use(routes);
 
 // Treat 'celebrate' pkg errors
