@@ -11,11 +11,11 @@ export default class SessionsController {
 
     const authUser = container.resolve(AuthUser);
 
-    const { user, token } = await authUser.execute({
+    const { user, token, expiresIn } = await authUser.execute({
       email,
       passwd,
     });
 
-    return res.json({ user, token });
+    return res.json({ user, token, expiresIn });
   }
 }

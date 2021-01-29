@@ -26,7 +26,7 @@ export default class CreateUser {
 
     if (userExists) {
       // throw errors in here and send them back in the route
-      throw new AppError("Email already used.");
+      throw new AppError("Email already used.", 409);
     }
 
     const hashedPasswd = await this.hashProvider.generateHash(passwd);

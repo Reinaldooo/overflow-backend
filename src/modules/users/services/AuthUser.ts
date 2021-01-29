@@ -16,6 +16,7 @@ interface RequestModel {
 interface ResponseModel {
   user: User;
   token: string;
+  expiresIn: number;
 }
 
 @injectable()
@@ -41,7 +42,8 @@ export default class AuthUser {
 
     const { jwt } = authConfig;
     const token = sign({ id: user.id }, jwt.phrase, jwt.options);
+    const expiresIn = Date.now() + 24 * 60 * 60 * 1000; // 24h from now
 
-    return { user: classToClass(user), token };
+    return { user: classToClass(user), token, expiresIn };
   }
 }
