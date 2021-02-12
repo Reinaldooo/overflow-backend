@@ -44,6 +44,7 @@ export default class UnenrollUserSvc {
     await this.classesRepository.save(_class);
 
     await this.cacheProvider.invalidade(`activeClasses/${_class.tutorId}`);
+    await this.cacheProvider.invalidade(`activeClasses/${userId}`);
 
     return true;
   }

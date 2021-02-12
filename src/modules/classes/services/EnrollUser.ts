@@ -72,6 +72,7 @@ export default class EnrollUser {
     });
 
     await this.cacheProvider.invalidade(`activeClasses/${tutorId}`);
+    await this.cacheProvider.invalidade(`activeClasses/${userId}`);
 
     return true;
   }
