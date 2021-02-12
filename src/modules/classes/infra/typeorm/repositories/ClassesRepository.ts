@@ -102,11 +102,13 @@ export default class ClassesRepository implements IClassesRepository {
     const techsRank = await this.ormRepo
       .createQueryBuilder("class")
       .leftJoin("class.techs", "techs")
-      .select("techs.name", "name")
-      .addSelect("COUNT(*)", "amount")
-      .groupBy("name")
+      .select("techs.id", "techid")
+      .addSelect("techs.name", "name")
+      .addSelect("techs.image", "techimage")
+      .addSelect("COUNT(techs.id)", "amount")
+      .groupBy("techid")
       .orderBy("amount", "DESC")
-      .limit(10)
+      .limit(6)
       .getRawMany();
 
     return techsRank;
@@ -118,10 +120,11 @@ export default class ClassesRepository implements IClassesRepository {
       .leftJoin("class.tutor", "tutor")
       .select("tutor.id", "tutorid")
       .addSelect("tutor.name", "name")
+      .addSelect("tutor.avatar", "avatar")
       .addSelect("COUNT(tutor.id)", "amount")
       .groupBy("tutorid")
       .orderBy("amount", "DESC")
-      .limit(10)
+      .limit(6)
       .getRawMany();
 
     return tutorsRank;
